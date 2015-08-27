@@ -862,14 +862,14 @@
 									<h4 class="modal-title">Panel Configuration</h4>
 								</div>
 								<div class="modal-body">
-									Here will be a configuration form
+									Are you sure you want to disput
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">
-										Close
+										Cancel
 									</button>
 									<button type="button" class="btn btn-primary">
-										Save changes
+										Sure
 									</button>
 								</div>
 							</div>
