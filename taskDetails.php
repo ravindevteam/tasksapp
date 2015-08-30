@@ -55,19 +55,18 @@
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive">
+											<?php
+												$db->query("SELECT tameras_tasksapp.tasks.* FROM tasks WHERE task_id = :tsk");
+												$db->bind(":tsk",$_GET['k']);
+												$getTask = $db->fetch();
+												if(!empty($getTask)){
+											?>
 											<table class="table table-bordered table-hover" id="sample-table-1">
 												<thead>
 													<tr>
-														<th colspan="10" class="center">Task Title</th>
+														<th colspan="10" class="center"><?php echo $getTask['title']; ?></th>
 													</tr>
 													<tr>
-														<!-- <th class="center">
-															<div class="checkbox-table">
-																<label>
-																	<input type="checkbox" class="flat-grey selectall">
-																</label>
-															</div>
-														</th> -->
 														<th>Assigned by</th>
 														<th>Assigned to</th>
 														<th>Start Date</th>
@@ -100,7 +99,8 @@
 														<td><span class="label label-sm label-warning">Expiring</span></td>
 													</tr> -->
 													<tr>
-														<td>Assigned by</td>
+														<td>
+														</td>
 														<td>Assigned to</td>
 														<td>Start Date</td>
 														<td>Due Date</td>
@@ -113,6 +113,11 @@
 													</tr>
 												</tbody>
 											</table>
+											<?php
+												}else{
+													echo "This task isn't exist";
+												}
+											?>
 										</div>
 									</div>
 								</div>
