@@ -56,7 +56,11 @@
 									<div class="panel-body">
 										<div class="table-responsive">
 											<?php
-												$db->query("SELECT tameras_tasksapp.tasks.* FROM tasks WHERE task_id = :tsk");
+												$db->query("SELECT tameras_tasksapp.tasks.*, tameras_hrapp.users.name, tameras_hrapp.locations.loc
+															FROM tameras_tasksapp.tasks
+															LEFT JOIN tameras_hrapp.users ON tameras_tasksapp.tasks.creator_id = tameras_hrapp.users.emp_id
+															LEFT JOIN tameras_hrapp.locations ON tameras_tasksapp.tasks.loc_id = tameras_hrapp.locations.locId
+															WHERE tameras_tasksapp.tasks.task_id = :tsk");
 												$db->bind(":tsk",$_GET['k']);
 												$getTask = $db->fetch();
 												if(!empty($getTask)){
@@ -99,8 +103,7 @@
 														<td><span class="label label-sm label-warning">Expiring</span></td>
 													</tr> -->
 													<tr>
-														<td>
-														</td>
+														<td><?php echo $getTask['name'] ?></td>
 														<td>Assigned to</td>
 														<td>Start Date</td>
 														<td>Due Date</td>
