@@ -15,6 +15,11 @@
 							</div>
 						</div>
 						<!-- end: BREADCRUMB -->
+						<?php
+							if(empty($_GET['k'])){
+								echo '<script>window.location.href="home.php";</script>';
+							}
+						?>
 						<!-- start: PAGE CONTENT -->
 						<div class="row">
 							<div class="col-md-12">
