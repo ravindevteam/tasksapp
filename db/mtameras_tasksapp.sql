@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Aug 24, 2015 at 03:56 PM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- Host: 127.0.0.1
+-- Generation Time: Aug 31, 2015 at 03:37 PM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `tameras_tasksapp`
 --
-CREATE DATABASE IF NOT EXISTS `tameras_tasksapp` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `tameras_tasksapp`;
 
 -- --------------------------------------------------------
 
@@ -131,8 +129,22 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `done_date` date DEFAULT NULL,
   `rating` int(11) unsigned DEFAULT NULL,
   `attach_group_id` int(11) NOT NULL,
+  `log_date` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tasks_followers`
+--
+
+CREATE TABLE IF NOT EXISTS `tasks_followers` (
+  `id` int(14) NOT NULL AUTO_INCREMENT,
+  `task_id` int(14) NOT NULL,
+  `follower_id` int(14) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
