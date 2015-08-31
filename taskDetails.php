@@ -56,11 +56,7 @@
 									<div class="panel-body">
 										<div class="table-responsive">
 											<?php
-												$db->query("SELECT tameras_tasksapp.tasks.*, tameras_hrapp.users.name, tameras_hrapp.locations.loc
-															FROM tameras_tasksapp.tasks
-															LEFT JOIN tameras_hrapp.users ON tameras_tasksapp.tasks.creator_id = tameras_hrapp.users.emp_id
-															LEFT JOIN tameras_hrapp.locations ON tameras_tasksapp.tasks.loc_id = tameras_hrapp.locations.locId
-															WHERE tameras_tasksapp.tasks.task_id = :tsk");
+												$db->query("SELECT * FROM tasks WHERE task_id = :tsk");
 												$db->bind(":tsk",$_GET['k']);
 												$getTask = $db->fetch();
 												if(!empty($getTask)){
@@ -84,35 +80,67 @@
 													</tr>
 												</thead>
 												<tbody>
-													<!-- <tr>
-														<td class="center">
-															<div class="checkbox-table">
-																<label>
-																	<input type="checkbox" class="flat-grey foocheck">
-																</label>
-															</div>
+													<tr>
+														<?php
+															$hr->query("SELECT name FROM users WHERE empId = :emp1
+																		UNION 
+																		SELECT name FROM users WHERE empId = :emp2");
+															$hr->bind(":emp1",$getTask['creator_id']);
+															$hr->bind(":emp2",$getTask['assignee_id']);
+															$getusers = $hr->fetchAll();
+															if(!empty($getusers)){
+																foreach($getusers AS $user){
+																	echo '<td>'.$user['name'].'</td>';
+																}
+															}
+														?>
+														<td><?php echo $getTask['start_date']; ?></td>
+														<td><?php echo $getTask['due_date']; ?></td>
+														<td><?php echo $getTask['done_date']; ?>/td>
+														<td>
+															<?php
+																$hr->query("SELECT loc FROM locations WHERE locId = :lid");
+																$hr->bind(":lid",$getTask['loc_id']);
+																$getLoc = $hr->fetch();
+																if(!empty($getLoc)){
+																	echo $getLoc['loc'];
+																}
+															?>
 														</td>
 														<td>
-															<a href="#">
-																alpha.com
-															</a>
+															<?php
+																if($getTask['repeat'] == 1){
+																	echo 'Daily';
+																}elseif($getTask['repeat'] == 2){
+																	echo 'Weekly';
+																}elseif($getTask['repeat'] == 3){
+																	echo 'Monthly';
+																}elseif($getTask['repeat'] == 4){
+																	echo 'Yearly';
+																}
+															?>
 														</td>
-														<td>$45</td>
-														<td>3,330</td>
-														<td>Feb 13</td>
-														<td><span class="label label-sm label-warning">Expiring</span></td>
-													</tr> -->
-													<tr>
-														<td><?php echo $getTask['name'] ?></td>
-														<td>Assigned to</td>
-														<td>Start Date</td>
-														<td>Due Date</td>
-														<td>Done Date</td>
-														<td>Task Location</td>
-														<td>Repeated</td>
-														<td>Desc.</td>
-														<td>Attaches</td>
-														<td><span class="label label-sm label-warning">Expiring</span></td>
+														<td><?php echo $getTask['desc']; ?></td>
+														<td>
+															<?php 
+																if($getTask['attach_group_id'] != 0){
+																	echo '<span class="messages-item-attachment no-display attachLabel">
+																				<i class="fa fa-paperclip attachs fixedAttaches" data-attach="'.$getTask['attach_group_id'].'" style="font-size:25px;cursor:pointer"></i>
+																			</span>';
+																}
+															?>
+														</td>
+														<td>
+															<?php
+																if($getTask['status'] == 1){
+																	echo '<span class="label label-sm label-warning">Pending</span>';
+																}elseif($getTask['status'] == 2){
+																	echo '<span class="label label-sm label-success">Done</span>';
+																}elseif($getTask['status'] == 3){
+																	echo '<span class="label label-sm label-danger">Canceled</span>';
+																}
+															?>
+														</td>
 													</tr>
 												</tbody>
 											</table>
