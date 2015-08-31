@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	require_once("classes/tasksConnection.php");
 	require_once("classes/hrConnection.php");
 ?>
@@ -48,6 +49,8 @@
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/styles-responsive.css">
 		<link rel="stylesheet" href="assets/css/plugins.css">
+		<link rel="stylesheet" href="assets/css/star-rating.css">
+		<link rel="stylesheet" href="assets/css/star-rating.min.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-default.css" type="text/css" id="skin_color">
 		<link rel="stylesheet" href="assets/css/print.css" type="text/css" media="print"/>
 		<!-- end: CORE CSS -->

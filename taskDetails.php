@@ -21,6 +21,7 @@
 							}
 						?>
 						<!-- start: PAGE CONTENT -->
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="alert alert-info">
@@ -82,9 +83,11 @@
 												<tbody>
 													<tr>
 														<?php
-															$hr->query("SELECT name FROM users WHERE empId = :emp1
+															$creator = $getTask['creator_id'];
+															$assignee = $getTask['assignee_id'];
+															$hr->query("SELECT name FROM users WHERE emp_id = :emp1
 																		UNION 
-																		SELECT name FROM users WHERE empId = :emp2");
+																		SELECT name FROM users WHERE emp_id = :emp2");
 															$hr->bind(":emp1",$getTask['creator_id']);
 															$hr->bind(":emp2",$getTask['assignee_id']);
 															$getusers = $hr->fetchAll();
@@ -96,7 +99,7 @@
 														?>
 														<td><?php echo $getTask['start_date']; ?></td>
 														<td><?php echo $getTask['due_date']; ?></td>
-														<td><?php echo $getTask['done_date']; ?>/td>
+														<td><?php echo $getTask['done_date']; ?></td>
 														<td>
 															<?php
 																$hr->query("SELECT loc FROM locations WHERE locId = :lid");
@@ -121,10 +124,10 @@
 															?>
 														</td>
 														<td><?php echo $getTask['desc']; ?></td>
-														<td>
+														<td class="center">
 															<?php 
 																if($getTask['attach_group_id'] != 0){
-																	echo '<span class="messages-item-attachment no-display attachLabel">
+																	echo '<span class="messages-item-attachment attachLabel">
 																				<i class="fa fa-paperclip attachs fixedAttaches" data-attach="'.$getTask['attach_group_id'].'" style="font-size:25px;cursor:pointer"></i>
 																			</span>';
 																}
@@ -153,6 +156,26 @@
 									</div>
 								</div>
 								<!-- end: RESPONSIVE TABLE PANEL -->
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="alert alert-info">
+									Rate the task
+								</div>
+								<div class="panel panel-white">
+									<div class="panel-body">
+										<?php
+											$_SESSION['tasks_empId'] = 1343;
+											if($creator == $_SESSION['tasks_empId']){
+												$attr = "";
+											}else{
+												$attr = "disabled";
+											}
+										?>
+										<input type="number" <?php echo $attr; ?> class="rating taskRating" value="3"  />
+									</div>
+								</div>
 							</div>
 						</div>
 						<!-- disucussion board -->
@@ -185,6 +208,8 @@
 								</div>
 								<div class="panel-body messages">
 									<ul class="messages-list col-md-12" id="ulComment">
+										<input type="hidden" value="<?php echo $creator; ?>" class="commentor" />
+										<input type="hidden" value="<?php echo $assignee; ?>" class="commentor" />
 										<li class="messages-item">
 											<img class="messages-item-avatar" src="assets/images/avatar-1.jpg" alt="">
 											<span class="messages-item-from">User Name</span>

@@ -469,11 +469,14 @@
 		<script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<script src="assets/js/subview.js"></script>
 		<script src="assets/js/subview-examples.js"></script>
+		<script src="assets/js/star-rating.js"></script>
+		<script src="assets/js/star-rating.min.js"></script>
 		<!-- end: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS -->
 		<!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 		<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 		<!-- start: CORE JAVASCRIPTS  -->
 		<script src="assets/js/main.js"></script>
+		<script src="assets/js/mfrontscript.js"></script>
 		<!-- end: CORE JAVASCRIPTS  -->
 		<script>
 			jQuery(document).ready(function() {
