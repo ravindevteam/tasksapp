@@ -61,7 +61,9 @@
 												$db->bind(":tsk",$_GET['k']);
 												$getTask = $db->fetch();
 												if(!empty($getTask)){
+
 											?>
+											<input type="hidden" id="mTaskId" value="<?php echo $getTask['task_id']; ?>"  />
 											<table class="table table-bordered table-hover" id="sample-table-1">
 												<thead>
 													<tr>
@@ -128,7 +130,7 @@
 															<?php 
 																if($getTask['attach_group_id'] != 0){
 																	echo '<span class="messages-item-attachment attachLabel">
-																				<i class="fa fa-paperclip attachs fixedAttaches" data-attach="'.$getTask['attach_group_id'].'" style="font-size:25px;cursor:pointer"></i>
+																				<i class="fa fa-paperclip mAttachs" data-attach="'.$getTask['attach_group_id'].'" style="font-size:25px;cursor:pointer"></i>
 																			</span>';
 																}
 															?>
@@ -148,6 +150,7 @@
 												</tbody>
 											</table>
 											<?php
+													$taskRate = $getTask['rating'];
 												}else{
 													echo "This task isn't exist";
 												}
@@ -173,7 +176,8 @@
 												$attr = "disabled";
 											}
 										?>
-										<input type="number" <?php echo $attr; ?> class="rating taskRating" value="3"  />
+										<input type="number" <?php echo $attr; ?> class="rating taskRating" value="<?php echo $taskRate; ?>"  />
+										<a class="panel-config rate-config no-display" href="#rate-config" data-toggle="modal"> <i class="fa fa-wrench"></i> <span>Disput</span></a>
 									</div>
 								</div>
 							</div>
@@ -224,6 +228,17 @@
 							</div>
 						</div>
 						<!-- end: PAGE CONTENT-->
+					</div>
+					<div class="no-display" id="mShowAttachs">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-white">
+									<div class="panel-body">
+										<div class="col-sm-12" id="mResDiv"></div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="subviews">
 						<div class="subviews-container"></div>

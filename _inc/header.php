@@ -43,8 +43,18 @@
 		<link rel="stylesheet" href="assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.css">
 		<link rel="stylesheet" href="assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css">
 		<!-- end: CSS REQUIRED FOR THIS SUBVIEW CONTENTS-->
-		<!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
-		<!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
+		<!-- start: CSS REQUIRED FOR PAGEs  -->
+		<link rel="stylesheet" href="assets/plugins/weather-icons/css/weather-icons.min.css">
+		<link rel="stylesheet" href="assets/plugins/nvd3/nv.d3.min.css">
+		<link rel="stylesheet" href="assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css">
+		<link rel="stylesheet" href="assets/plugins/select2/select2.css">
+		<link rel="stylesheet" href="assets/plugins/datepicker/css/datepicker.css">
+		<link rel="stylesheet" href="assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
+		<link rel="stylesheet" href="assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css">
+		<link rel="stylesheet" href="assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css">
+		<link rel="stylesheet" href="assets/plugins/jQuery-Tags-Input/jquery.tagsinput.css">
+		<!-- end: CSS REQUIRED FOR PAGEs -->
+		<link rel="stylesheet" href="assets/plugins/lightbox2/css/lightbox.css">
 		<!-- start: CORE CSS -->
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/styles-responsive.css">
@@ -872,6 +882,32 @@
 										Cancel
 									</button>
 									<button type="button" class="btn btn-primary">
+										Sure
+									</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+					<!-- end: SPANEL CONFIGURATION MODAL FORM -->
+					<!-- start: PANEL CONFIGURATION MODAL FORM -->
+					<div class="modal fade" id="rate-config" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										&times;
+									</button>
+									<h4 class="modal-title">Rate Confirmation</h4>
+								</div>
+								<div class="modal-body confirmRate"></div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default mCancel" data-dismiss="modal">
+										Cancel
+									</button>
+									<button type="button" data-value="" class="btn btn-primary mRate">
 										Sure
 									</button>
 								</div>
