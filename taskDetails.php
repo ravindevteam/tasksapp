@@ -21,7 +21,6 @@
 							}
 						?>
 						<!-- start: PAGE CONTENT -->
-
 						<div class="row">
 							<div class="col-md-12">
 								<div class="alert alert-info">
@@ -61,7 +60,6 @@
 												$db->bind(":tsk",$_GET['k']);
 												$getTask = $db->fetch();
 												if(!empty($getTask)){
-
 											?>
 											<input type="hidden" id="mTaskId" value="<?php echo $getTask['task_id']; ?>"  />
 											<table class="table table-bordered table-hover" id="sample-table-1">
@@ -177,6 +175,7 @@
 											}
 										?>
 										<input type="number" <?php echo $attr; ?> class="rating taskRating" value="<?php echo $taskRate; ?>"  />
+										<input type="hidden" value="<?php echo $taskRate ?>" class="mTmpRate" />
 										<a class="panel-config rate-config no-display" href="#rate-config" data-toggle="modal"> <i class="fa fa-wrench"></i> <span>Disput</span></a>
 									</div>
 								</div>
@@ -225,6 +224,70 @@
 										</li>
 									</ul>
 								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+
+								<div class="panel panel-white">
+
+									<div class="panel-body messages">
+
+										<div class="table-responsive">
+
+											<table class="table table-bordered table-hover" id="commentForm">
+
+												<tbody>
+
+													<tr>
+
+														<td class="center" style="width:90%">
+
+											                <textarea name="commentarea" id="commentarea" style="width: 80%; height: 75px;border: 1px solid; #000"></textarea>
+
+											                <input type="hidden" name="vo_id" id="vo_id" value="" />
+
+											                <input type="hidden" name="attach_id" id="attach_id" value="e" />
+
+											                <input type="hidden" name="user" id="usr" value="" />
+
+											            </td>
+
+											            <td class="center">
+
+											            	<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
+
+																<span class="btn btn-file btn-light-grey"><i class="fa fa-folder-open-o"></i> <span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span>
+
+																	<input type="file" name="file" class="issueVochFile">
+
+																</span>
+
+																<span class="fileupload-preview"></span>
+
+																<a href="#" class="close fileupload-exists float-none" data-dismiss="fileupload">×</a>
+
+															</div>
+
+											            </td>
+
+													</tr>
+
+													<tr>
+
+										              <td class="center" colspan="2"><input type="button" name="addcom" id="addcom" value="add your comment" class="btn btn-green" /></td>
+
+										            </tr>
+
+												</tbody>
+
+											</table>
+
+										</div>
+
+									</div>
+
+								</div>
+
 							</div>
 						</div>
 						<!-- end: PAGE CONTENT-->

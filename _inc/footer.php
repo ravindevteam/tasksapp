@@ -443,7 +443,7 @@
 		<script src="assets/plugins/moment/min/moment.min.js"></script>
 		<script src="assets/plugins/perfect-scrollbar/src/jquery.mousewheel.js"></script>
 		<script src="assets/plugins/perfect-scrollbar/src/perfect-scrollbar.js"></script>
-		<script src="assets/plugins/bootbox/bootbox.min.js"></script>
+		<script src="assets/plugins/bootbox/bootbox.js"></script>
 		<script src="assets/plugins/jquery.scrollTo/jquery.scrollTo.min.js"></script>
 		<script src="assets/plugins/ScrollToFixed/jquery-scrolltofixed-min.js"></script>
 		<script src="assets/plugins/jquery.appear/jquery.appear.js"></script>

@@ -892,32 +892,6 @@
 					</div>
 					<!-- /.modal -->
 					<!-- end: SPANEL CONFIGURATION MODAL FORM -->
-					<!-- start: PANEL CONFIGURATION MODAL FORM -->
-					<div class="modal fade" id="rate-config" tabindex="-1" role="dialog" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-										&times;
-									</button>
-									<h4 class="modal-title">Rate Confirmation</h4>
-								</div>
-								<div class="modal-body confirmRate"></div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default mCancel" data-dismiss="modal">
-										Cancel
-									</button>
-									<button type="button" data-value="" class="btn btn-primary mRate">
-										Sure
-									</button>
-								</div>
-							</div>
-							<!-- /.modal-content -->
-						</div>
-						<!-- /.modal-dialog -->
-					</div>
-					<!-- /.modal -->
-					<!-- end: SPANEL CONFIGURATION MODAL FORM -->
 					<div class="container">
 						<!-- start: PAGE HEADER -->
 						<!-- start: TOOLBAR -->
