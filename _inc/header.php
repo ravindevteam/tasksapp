@@ -2,6 +2,8 @@
 	session_start();
 	require_once("classes/tasksConnection.php");
 	require_once("classes/hrConnection.php");
+	require_once("classes/tasks.php");
+	require_once("classes/tasks_followers.php");
 ?>
 <!DOCTYPE html>
 <!-- Template Name: Rapido - Responsive Admin Template build with Twitter Bootstrap 3.x Version: 1.0 Author: ClipTheme -->
