@@ -188,4 +188,28 @@ function fixedUploadFiles(event)
       }
   });
 }
+
+//script to dispute
+$("body").on("click","#disput",function(){
+	var task     = $("#mTaskId").val();
+	var creator  = $("#creator").val();
+	var postData = {'task':task,'creator':creator,'action':'disputAction'};
+	if(mAjaxFlag == 0){
+		mAjaxFlag = 1;
+		$.ajax({
+			url:mPageName,
+	        type:"POST",
+	        data:postData,
+	        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
+	        success: function(result){
+	        	mAjaxFlag = 0;
+
+	        },
+	        error: function(){
+	        	mAjaxFlag = 0;
+	        	bootbox.alert("The server is not responding, please try again later");
+	        }
+		});
+	}
+});
 /*************************** end oftaskDetails.php **********************/

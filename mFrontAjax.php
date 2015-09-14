@@ -191,6 +191,13 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 			"naid"   => $newId
 		);
 	echo json_encode($array_res);
+}if(!empty($_POST['action']) && $_POST['action'] == "disputAction"){
+	// $task = $_POST['task'];
+	// $creator = $_POST['creator'];
+	// $hr->query("SELECT users.emp_id FROM users
+	// 			INNER JOIN emp_loc ON users.job_id = emp_loc.job_id
+	// 			INNER JOIN 
+	// 			WHERE ");
 }
 $db->closeConn();
 $hr->closeConn();

@@ -97,6 +97,8 @@
 																}
 															}
 														?>
+														<input type="hidden" value="<?php echo $creator; ?>" id="creator" />
+														<input type="hidden" value="<?php echo $assignee; ?>" id="assignee" />
 														<td><?php echo $getTask['start_date']; ?></td>
 														<td><?php echo $getTask['due_date']; ?></td>
 														<td><?php echo $getTask['done_date']; ?></td>
@@ -167,7 +169,7 @@
 								<div class="panel panel-white">
 									<div class="panel-body">
 										<?php
-											$_SESSION['tasks_empId'] = 1343;
+											$_SESSION['tasks_empId'] = 1265;
 											if($creator == $_SESSION['tasks_empId']){
 												$attr = "";
 											}else{
