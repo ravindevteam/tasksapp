@@ -43,9 +43,9 @@
 												<!-- <li>
 													<a class="panel-refresh" href="#"> <i class="fa fa-refresh"></i> <span>Refresh</span> </a>
 												</li> -->
-												<li>
+												<!-- <li>
 													<a class="panel-config" href="#panel-config" data-toggle="modal"> <i class="fa fa-wrench"></i> <span>Configurations</span></a>
-												</li>
+												</li> -->
 												<li>
 													<a class="panel-expand" href="#"> <i class="fa fa-expand"></i> <span>Fullscreen</span></a>
 												</li>										
@@ -174,128 +174,142 @@
 												$attr = "disabled";
 											}
 										?>
-										<input type="number" <?php echo $attr; ?> class="rating taskRating" value="<?php echo $taskRate; ?>"  />
-										<input type="hidden" value="<?php echo $taskRate ?>" class="mTmpRate" />
-										<a class="panel-config rate-config no-display" href="#rate-config" data-toggle="modal"> <i class="fa fa-wrench"></i> <span>Disput</span></a>
+										<div class="col-md-11">
+											<input type="number" <?php echo $attr; ?> class="rating taskRating" value="<?php echo $taskRate; ?>"  />
+											<input type="hidden" value="<?php echo $taskRate ?>" class="mTmpRate" />
+										</div>
+										<div class="col-md-1">
+											<?php
+												if($assignee == $_SESSION['tasks_empId']){
+											?>
+													<input type="button" name="dispute" id="dispute" value="Dispute" class="btn btn-red" />
+											<?php
+												}
+											?>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<!-- disucussion board -->
-						<div class="col-md-12">
-							<div class="panel panel-white">
-								<div class="panel-heading">
-									<i class="fa fa-external-link-square"></i>
-									Task discussion board
-									<div class="panel-tools">										
-										<div class="dropdown">
-										<a data-toggle="dropdown" class="btn btn-xs dropdown-toggle btn-transparent-grey">
-											<i class="fa fa-cog"></i>
-										</a>
-										<ul class="dropdown-menu dropdown-light pull-right" role="menu">
-											<li>
-												<a class="panel-collapse collapses" href="#"><i class="fa fa-angle-up"></i> <span>Collapse</span> </a>
-											</li>
-											<!-- <li>
-												<a class="panel-refresh" href="#"> <i class="fa fa-refresh"></i> <span>Refresh</span> </a>
-											</li> -->
-											<li>
-												<a class="panel-config" href="#panel-config" data-toggle="modal"> <i class="fa fa-wrench"></i> <span>Disput</span></a>
-											</li>
-											<li>
-												<a class="panel-expand" href="#"> <i class="fa fa-expand"></i> <span>Fullscreen</span></a>
-											</li>										
-										</ul>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-white">
+									<div class="panel-heading">
+										<i class="fa fa-external-link-square"></i>
+										Task discussion board
+										<div class="panel-tools">										
+											<div class="dropdown">
+											<a data-toggle="dropdown" class="btn btn-xs dropdown-toggle btn-transparent-grey">
+												<i class="fa fa-cog"></i>
+											</a>
+											<ul class="dropdown-menu dropdown-light pull-right" role="menu">
+												<li>
+													<a class="panel-collapse collapses" href="#"><i class="fa fa-angle-up"></i> <span>Collapse</span> </a>
+												</li>
+												<!-- <li>
+													<a class="panel-refresh" href="#"> <i class="fa fa-refresh"></i> <span>Refresh</span> </a>
+												</li> -->
+												<!-- <li>
+													<a class="panel-config" href="#panel-config" data-toggle="modal"> <i class="fa fa-wrench"></i> <span>Disput</span></a>
+												</li> -->
+												<li>
+													<a class="panel-expand" href="#"> <i class="fa fa-expand"></i> <span>Fullscreen</span></a>
+												</li>										
+											</ul>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="panel-body messages">
-									<input type="hidden" value="<?php echo $creator; ?>" class="commentor" />
-									<input type="hidden" value="<?php echo $assignee; ?>" class="commentor" />
-									<?php
-									$db->query("SELECT follower_id FROM tasks_followers WHERE task_id = :tsk");
-									$db->bind(":tsk",$_GET['k']);
-									$getFollowers = $db->fetchAll();
-									if(!empty($getFollowers)){
-										foreach($getFollowers AS $follower){
-											if($follower['follower_id'] != $creator && $follower['follower_id'] != $assignee){
-												echo '<input type="hidden" value="'.$follower['follower_id'].'" class="commentor" />';
-											}
-										}
-									}
-									?>
-									<ul class="messages-list col-md-12" id="ulComment">
+									<div class="panel-body messages">
 										<input type="hidden" value="<?php echo $creator; ?>" class="commentor" />
 										<input type="hidden" value="<?php echo $assignee; ?>" class="commentor" />
 										<?php
-											$db->query("SELECT * FROM comments WHERE task_id = :tsk");
-											$db->bind(":tsk",$_GET['k']);
-											$comments = $db->fetchAll();
-											if(!empty($comments)){
-												foreach($comments AS $row){
-													$hr->query("SELECT * FROM users WHERE emp_id = :emp");
-													$hr->bind(":emp",$row['user_id']);
-													$getUser = $hr->fetch();
-													if(!empty($getUser)){
-														$userName = $getUser['name'];
-													}else{
-														$userName = "User Name";
-													}
-										?>
-													<li class="messages-item">
-														<img class="messages-item-avatar" src="assets/images/avatar-1.jpg" alt="">
-														<span class="messages-item-from"><?php echo $userName; ?></span>
-														<?php 
-															if($row['attach_group_id'] != 0){
-														?>
-											            <span class="messages-item-attachment">
-															<i class="fa fa-paperclip mAttachs" data-attach="<?php echo $row['attach_group_id']; ?>"></i>
-														</span>
-														<?php
-															}
-														?>
-														<span class="messages-item-subject">User role</span>
-														<span class="messages-item-preview"><?php echo $row['comment_desc'] ?><input type="hidden" name="commentor" class="commentor" value="<?php echo $row['user_id']; ?>" /></span>
-													</li>
-										<?php
+										$db->query("SELECT follower_id FROM tasks_followers WHERE task_id = :tsk");
+										$db->bind(":tsk",$_GET['k']);
+										$getFollowers = $db->fetchAll();
+										if(!empty($getFollowers)){
+											foreach($getFollowers AS $follower){
+												if($follower['follower_id'] != $creator && $follower['follower_id'] != $assignee){
+													echo '<input type="hidden" value="'.$follower['follower_id'].'" class="commentor" />';
 												}
-											}else{
-										?>
-												<li class="messages-item">There is no comments yet !!!</li>
-										<?php 
 											}
+										}
 										?>
-									</ul>
+										<ul class="messages-list col-md-12" id="ulComment">
+											<input type="hidden" value="<?php echo $creator; ?>" class="commentor" />
+											<input type="hidden" value="<?php echo $assignee; ?>" class="commentor" />
+											<?php
+												$db->query("SELECT * FROM comments WHERE task_id = :tsk");
+												$db->bind(":tsk",$_GET['k']);
+												$comments = $db->fetchAll();
+												if(!empty($comments)){
+													foreach($comments AS $row){
+														$hr->query("SELECT * FROM users WHERE emp_id = :emp");
+														$hr->bind(":emp",$row['user_id']);
+														$getUser = $hr->fetch();
+														if(!empty($getUser)){
+															$userName = $getUser['name'];
+														}else{
+															$userName = "User Name";
+														}
+											?>
+														<li class="messages-item">
+															<img class="messages-item-avatar" src="assets/images/avatar-1.jpg" alt="">
+															<span class="messages-item-from"><?php echo $userName; ?></span>
+															<?php 
+																if($row['attach_group_id'] != 0){
+															?>
+												            <span class="messages-item-attachment">
+																<i class="fa fa-paperclip mAttachs" data-attach="<?php echo $row['attach_group_id']; ?>"></i>
+															</span>
+															<?php
+																}
+															?>
+															<span class="messages-item-subject">User role</span>
+															<span class="messages-item-preview"><?php echo $row['comment_desc'] ?><input type="hidden" name="commentor" class="commentor" value="<?php echo $row['user_id']; ?>" /></span>
+														</li>
+											<?php
+													}
+												}else{
+											?>
+													<li class="messages-item">There is no comments yet !!!</li>
+											<?php 
+												}
+											?>
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-12">
-								<div class="panel panel-white">
-									<div class="panel-body messages">
-										<div class="table-responsive">
-											<table class="table table-bordered table-hover" id="commentForm">
-												<tbody>
-													<tr>
-														<td class="center" style="width:90%">
-											                <textarea name="commentarea" id="commentarea" style="width: 80%; height: 75px;border: 1px solid; #000"></textarea>
-											                <input type="hidden" name="attach_id" id="attach_id" value="e" />
-											                <input type="hidden" name="user" id="usr" value="<?php echo $_SESSION['tasks_empId']; ?>" />
-											            </td>
-											            <td class="center">
-											            	<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
-																<span class="btn btn-file btn-light-grey"><i class="fa fa-folder-open-o"></i> <span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span>
-																	<input type="file" name="file" class="mTaskUploadFile">
-																</span>
-																<span class="fileupload-preview"></span>
-																<a href="#" class="close fileupload-exists float-none" data-dismiss="fileupload">×</a>
-															</div>
-											            </td>
-													</tr>
-													<tr>
-										              <td class="center" colspan="2"><input type="button" name="addcom" id="addcom" value="add your comment" class="btn btn-green" /></td>
-										            </tr>
-												</tbody>
-											</table>
+						<div class="row">
+							<div class="col-md-12">
+									<div class="panel panel-white">
+										<div class="panel-body messages">
+											<div class="table-responsive">
+												<table class="table table-bordered table-hover" id="commentForm">
+													<tbody>
+														<tr>
+															<td class="center" style="width:90%">
+												                <textarea name="commentarea" id="commentarea" style="width: 80%; height: 75px;border: 1px solid; #000"></textarea>
+												                <input type="hidden" name="attach_id" id="attach_id" value="e" />
+												                <input type="hidden" name="user" id="usr" value="<?php echo $_SESSION['tasks_empId']; ?>" />
+												            </td>
+												            <td class="center">
+												            	<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
+																	<span class="btn btn-file btn-light-grey"><i class="fa fa-folder-open-o"></i> <span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span>
+																		<input type="file" name="file" class="mTaskUploadFile">
+																	</span>
+																	<span class="fileupload-preview"></span>
+																	<a href="#" class="close fileupload-exists float-none" data-dismiss="fileupload">×</a>
+																</div>
+												            </td>
+														</tr>
+														<tr>
+											              <td class="center" colspan="2"><input type="button" name="addcom" id="addcom" value="add your comment" class="btn btn-green" /></td>
+											            </tr>
+													</tbody>
+												</table>
+											</div>
 										</div>
 									</div>
 								</div>
