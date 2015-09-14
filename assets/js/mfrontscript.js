@@ -30,6 +30,7 @@ $(".taskRating").on('rating.change', function(event, value, caption){
 			        },
 			        error: function(){
 			        	mAjaxFlag = 0;
+			        	bootbox.alert("The server is not responding, please try again later");
 			        }
 				});
 			}
@@ -64,6 +65,7 @@ $('.taskRating').on('rating.clear', function(event) {
 			        },
 			        error: function(){
 			        	mAjaxFlag = 0;
+			        	bootbox.alert("The server is not responding, please try again later");
 			        }
 				});
 			}
@@ -101,8 +103,89 @@ $("body").on("click",".mAttachs",function(){
 	        },
 	        error: function(){
 	        	mAjaxFlag = 0;
+	        	bootbox.alert("The server is not responding, please try again later");
 	        }
 		});
 	}
 });
+
+//script to comment on the task
+$("body").on("click","#addcom",function(){
+	var commentFlag = $(".commentFlag").val();
+	var commentarea = $("#commentarea").val();
+	var attach_id   = $("#attach_id").val();
+	var usr         = $("#usr").val();
+	var task        = $("#mTaskId").val();
+	var postData    = {'commentarea':commentarea,'attach_id':attach_id,'usr':usr,'task':task,'action':'commentOnTask'};
+	if(commentarea != "" || attach_id != "e"){
+		if(mAjaxFlag == 0){
+			mAjaxFlag = 1;
+			$.ajax({
+				url:mPageName,
+		        type:"POST",
+		        data:postData,
+		        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
+		        success: function(result){
+		        	mAjaxFlag = 0;
+		        	if(result != ""){
+		       			$("#commentarea").val("");
+		       			$("#attach_id").val("e");
+		        		$("#ulComment").html(result);
+		        		$(".mTaskUploadFile").val("");
+		        	}else{
+		        		bootbox.alert("Failed to comment, please try again later");
+		        	}
+		        },
+		        error: function(){
+		        	mAjaxFlag = 0;
+		        	bootbox.alert("The server is not responding, please try again later");
+		        }
+			});
+		}
+	}
+});
+
+//code to upload attachments without refreshing the page
+var files;
+
+// Add events
+$('input.mTaskUploadFile').on('change', fixedPrepareUpload);
+
+// Grab the files and set them to our variable
+function fixedPrepareUpload(event)
+{
+files = event.target.files;
+$(this).submit();
+}
+
+$('input.mTaskUploadFile').on('submit', fixedUploadFiles);
+// Catch the form submit and upload the files
+function fixedUploadFiles(event)
+{
+  event.stopPropagation(); // Stop stuff happening
+  event.preventDefault(); // Totally stop stuff happening
+
+  // Create a formdata object and add the files
+  var datax = new FormData();
+  var aid   = $("#attach_id").val();
+  $.each(files, function(key, value)
+  {
+      datax.append(key, value);
+  });
+
+  $.ajax({
+      url: mPageName + '?aid=' + aid,
+      type: 'POST',
+      data: datax,
+      cache: false,
+      dataType: 'json',
+      processData: false, // Don't process the files
+      contentType: false // Set content type to false as jQuery will tell the server its a query string request
+  }).done(function(html){
+      $("#attach_id").val(html.naid);
+      if(html.status != ""){
+      	bootbox.alert(html.status);
+      }
+  });
+}
 /*************************** end oftaskDetails.php **********************/

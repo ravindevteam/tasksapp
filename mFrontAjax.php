@@ -87,6 +87,110 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 		$res = 2;
 	}
 	echo $res;
+}if(!empty($_POST['action']) && $_POST['action'] == "commentOnTask"){
+	$commentarea = $_POST['commentarea'];
+	$attach_id   = $_POST['attach_id'];
+	$usr         = $_POST['usr'];
+	$task        = $_POST['task'];
+	$data = '';
+	if($attach_id == "e"){
+		$attach_id = 0;
+	}
+	$db->query("INSERT INTO comments 
+				SET 
+				`comment_desc`    = :cmnt,
+				`user_id`         = :usr,
+				`task_id`      	  = :tsk,
+				`attach_group_id` = :atch");
+	$db->bind(":cmnt",$commentarea);
+	$db->bind(":usr",$usr);
+	$db->bind(":tsk",$task);
+	$db->bind(":atch",$attach_id);
+	$insert = $db->execute();
+	if($insert){
+		$db->query("SELECT * FROM comments WHERE task_id = :tsk");
+		$db->bind(":tsk",$task);
+		$comments = $db->fetchAll();
+		if(!empty($comments)){
+			foreach($comments AS $row){
+				$hr->query("SELECT * FROM users WHERE emp_id = :emp");
+				$hr->bind(":emp",$row['user_id']);
+				$getUser = $hr->fetch();
+				if(!empty($getUser)){
+					$userName = $getUser['name'];
+				}else{
+					$userName = "User Name";
+				}
+
+				$data .= '<li class="messages-item">
+							<img class="messages-item-avatar" src="assets/images/avatar-1.jpg" alt="">
+							<span class="messages-item-from">'.$userName.'</span>';
+							
+				if($row['attach_group_id'] != 0){
+		            $data .= '<span class="messages-item-attachment">
+								<i class="fa fa-paperclip mAttachs" data-attach="'.$row['attach_group_id'].'"></i>
+							</span>';
+				}
+							
+				$data .= '<span class="messages-item-subject">User role</span>
+							<span class="messages-item-preview">'.$row['comment_desc'].'<input type="hidden" name="commentor" class="commentor" value="'.$row['user_id'].'" /></span>
+						</li>';
+			}
+		}
+	}
+	echo $data;
+}elseif(!empty($_GET['aid'])){
+	$aid = $_GET['aid'];
+	if(!empty($_FILES)){
+		foreach($_FILES as $file)
+		{
+			$file_name = "comment-".time().".".pathinfo($file['name'],PATHINFO_EXTENSION);
+			if(move_uploaded_file($file['tmp_name'], "taskFiles/".$file_name))
+			{
+				$flag = 1;
+				try {
+					$db->beginTransaction();
+					if($aid == "e"){
+						$db->query("SELECT IFNULL(MAX(attach_group_id),0) + 1 AS newId FROM attachments");
+						$newId = $db->fetch();
+						if(!empty($newId)){
+							$newId = $newId['newId'];
+						}else{
+							$newId = 1;
+						}
+					}else{
+						$newId = $aid;
+					}
+					$db->query("INSERT INTO attachments SET attach_group_id = :n, attach_desc = :d");
+					$db->bind(":n",$newId);
+					$db->bind(":d",$file_name);
+					$db->execute();
+					$db->endTransaction();
+					$flag = 1;
+					$status = "The file uploaded successuflly";
+				} catch (Exception $e) {
+					$db->cancelTransaction();
+					$flag = 2;
+					$status = "Failed to add the file please try again later";
+				}
+			} 
+			else 
+			{
+				$status = "Failed to upload file please try again later";
+			    $flag = 2;
+			}
+		}
+	}else{
+		$status = "";
+		$flag   = "";
+		$newId  = "";
+	}
+	$array_res = array(
+			"status" => $status,
+			"flag"   => $flag,
+			"naid"   => $newId
+		);
+	echo json_encode($array_res);
 }
 $db->closeConn();
 $hr->closeConn();
