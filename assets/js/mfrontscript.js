@@ -8,8 +8,9 @@ $(".taskRating").rating({min:0, max:5, step:1,stars:5,size:'xs',glyphicon:false}
 $(".taskRating").on('rating.change', function(event, value, caption){
 	bootbox.confirm("Are you sure you want to give this task " + caption, function(result) {
 		if(result) {
-			var taskId = $("#mTaskId").val();
-			var postData = {'taskId':taskId,'value':value,'action':'RateTask'};
+			var taskId   = $("#mTaskId").val();
+			var assignee = $("#assignee").val();
+			var postData = {'taskId':taskId,'assignee':assignee,'value':value,'action':'RateTask'};
 			if(mAjaxFlag == 0){
 				mAjaxFlag = 1;
 				$.ajax({
@@ -44,8 +45,9 @@ $(".taskRating").on('rating.change', function(event, value, caption){
 $('.taskRating').on('rating.clear', function(event) {
     bootbox.confirm("Are you sure you want to clear the rate", function(result) {
 		if(result) {
-			var taskId = $("#mTaskId").val();
-			var postData = {'taskId':taskId,'value':null,'action':'RateTask'};
+			var taskId   = $("#mTaskId").val();
+			var assignee = $("#assignee").val();
+			var postData = {'taskId':taskId,'assignee':assignee,'value':null,'action':'RateTask'};
 			if(mAjaxFlag == 0){
 				mAjaxFlag = 1;
 				$.ajax({
@@ -116,7 +118,11 @@ $("body").on("click","#addcom",function(){
 	var attach_id   = $("#attach_id").val();
 	var usr         = $("#usr").val();
 	var task        = $("#mTaskId").val();
-	var postData    = {'commentarea':commentarea,'attach_id':attach_id,'usr':usr,'task':task,'action':'commentOnTask'};
+	var commentors  = new Array();
+	$(".commentor").each(function(){
+		commentors.push($(this).val());
+	});
+	var postData    = {'commentarea':commentarea,'commentors':commentors,'attach_id':attach_id,'usr':usr,'task':task,'action':'commentOnTask'};
 	if(commentarea != "" || attach_id != "e"){
 		if(mAjaxFlag == 0){
 			mAjaxFlag = 1;
@@ -190,7 +196,7 @@ function fixedUploadFiles(event)
 }
 
 //script to dispute
-$("body").on("click","#disput",function(){
+$("body").on("click","#dispute",function(){
 	var task     = $("#mTaskId").val();
 	var creator  = $("#creator").val();
 	var postData = {'task':task,'creator':creator,'action':'disputAction'};
@@ -203,7 +209,15 @@ $("body").on("click","#disput",function(){
 	        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
 	        success: function(result){
 	        	mAjaxFlag = 0;
-
+	        	if(result == 1){
+	        		bootbox.alert("The task creator manager is called to this task");
+	        	}else if(result == 2){
+	        		bootbox.alert("The task creator don't have manager");
+	        	}else if(result == 3){
+	        		bootbox.alert("Failed to dispute, please try again later");
+	        	}else{
+	        		bootbox.alert("The server is not responding, please try again later");
+	        	}
 	        },
 	        error: function(){
 	        	mAjaxFlag = 0;

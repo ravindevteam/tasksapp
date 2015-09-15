@@ -2,6 +2,7 @@
 session_start();
 require_once("classes/tasksConnection.php");
 require_once("classes/hrConnection.php");
+require_once("_inc/mFunctions.php");
 if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 	$attachId = $_POST['attachId'];
 	$images   = array();
@@ -75,15 +76,25 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 
 	echo $res;
 }if(!empty($_POST['action']) && $_POST['action'] == "RateTask"){
-	$taskId = $_POST['taskId'];
-	$value  = $_POST['value'];
-	$db->query("UPDATE tasks SET rating = :rte WHERE task_id = :tid");
-	$db->bind(":rte",$value);
-	$db->bind(":tid",$taskId);
-	$update = $db->execute();
-	if($update){
+	$taskId   = $_POST['taskId'];
+	$value    = $_POST['value'];
+	$assignee = $_POST['assignee'];
+	try {
+		$db->beginTransaction();
+		$db->query("UPDATE tasks SET rating = :rte WHERE task_id = :tid");
+		$db->bind(":rte",$value);
+		$db->bind(":tid",$taskId);
+		$update = $db->execute();
+		if($value == NULL){
+			$desc = 'There is a rate on a task that you assigned is cleared <a href="taskDetails.php?k='.$taskId.'">GO?</a>';
+		}else{
+			$desc = 'There is a task that you assigned to is rated <a href="taskDetails.php?k='.$taskId.'">GO?</a>';
+		}
+		mInsertNotification($db,$assignee,$desc);
+		$db->endTransaction();
 		$res = 1;
-	}else{
+	} catch (Exception $e) {
+		$db->cancelTransaction();
 		$res = 2;
 	}
 	echo $res;
@@ -92,22 +103,41 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 	$attach_id   = $_POST['attach_id'];
 	$usr         = $_POST['usr'];
 	$task        = $_POST['task'];
+	$commentors  = $_POST['commentors'];
+	$commentors  = array_values(array_unique($commentors));
+	if(($key = array_search($usr, $commentors)) !== false) {
+	    unset($commentors[$key]);
+	}
+	$commentors = array_values(array_unique($commentors));
 	$data = '';
 	if($attach_id == "e"){
 		$attach_id = 0;
 	}
-	$db->query("INSERT INTO comments 
-				SET 
-				`comment_desc`    = :cmnt,
-				`user_id`         = :usr,
-				`task_id`      	  = :tsk,
-				`attach_group_id` = :atch");
-	$db->bind(":cmnt",$commentarea);
-	$db->bind(":usr",$usr);
-	$db->bind(":tsk",$task);
-	$db->bind(":atch",$attach_id);
-	$insert = $db->execute();
-	if($insert){
+	try {
+		$db->beginTransaction();
+		$db->query("INSERT INTO comments 
+					SET 
+					`comment_desc`    = :cmnt,
+					`user_id`         = :usr,
+					`task_id`      	  = :tsk,
+					`attach_group_id` = :atch");
+		$db->bind(":cmnt",$commentarea);
+		$db->bind(":usr",$usr);
+		$db->bind(":tsk",$task);
+		$db->bind(":atch",$attach_id);
+		$insert = $db->execute();
+		if(!empty($commentors)){
+			$desc = 'There is a comment in a task that related to you';
+			mInsertNotification($db,$commentors,$desc);
+		}
+		$db->endTransaction();
+		$flag = 1;
+	} catch (Exception $e) {
+		$db->cancelTransaction();
+		$flag = 2;
+	}
+	
+	if($flag == 1){
 		$db->query("SELECT * FROM comments WHERE task_id = :tsk");
 		$db->bind(":tsk",$task);
 		$comments = $db->fetchAll();
@@ -207,8 +237,29 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 	}
 
 	if(!empty($emps)){
-		for($i = 0; $i < count($emps); $i++){
-			//HERE WE GONNA INSERT THE FOLLOWERS AND SEND A NOTIFICATION
+		try {
+			$db->beginTransaction();
+			for($i = 0; $i < count($emps); $i++){
+				//HERE WE GONNA INSERT THE FOLLOWERS AND SEND A NOTIFICATION
+				$db->query("SELECT id FROM tasks_followers WHERE task_id = :tid AND follower_id = :fid LIMIT :lmt");
+				$db->bind(":tid", $task);
+				$db->bind(":fid", $emps[$i]);
+				$db->bind(":lmt", 1);
+				$get = $db->fetch();
+				if(empty($get)){
+					$db->query("INSERT INTO tasks_followers (task_id,follower_id) VALUES (:tsk,:flowr)");
+					$db->bind(":tsk",$task);
+					$db->bind(":flowr",$emps[$i]);
+					$db->execute();
+				}
+			}
+			$desc = 'You are called in a task by the assignee of that task <a href="taskDetails.php?k='.$task.'">GO?</a>';
+			mInsertNotification($db,$emps,$desc);
+			$db->endTransaction();
+			$res = 1;
+		} catch (Exception $e) {
+			$db->cancelTransaction();
+			$res = 3;
 		}
 	}else{
 		$res = 2;

@@ -238,8 +238,6 @@
 										}
 										?>
 										<ul class="messages-list col-md-12" id="ulComment">
-											<input type="hidden" value="<?php echo $creator; ?>" class="commentor" />
-											<input type="hidden" value="<?php echo $assignee; ?>" class="commentor" />
 											<?php
 												$db->query("SELECT * FROM comments WHERE task_id = :tsk");
 												$db->bind(":tsk",$_GET['k']);
