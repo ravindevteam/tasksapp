@@ -143,17 +143,24 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 		$comments = $db->fetchAll();
 		if(!empty($comments)){
 			foreach($comments AS $row){
-				$hr->query("SELECT * FROM users WHERE emp_id = :emp");
+				$hr->query("SELECT users.*, jobs.job FROM users
+							INNER JOIN employees ON users.emp_id = employees.emp_id
+							INNER JOIN jobs ON employees.job_id = jobs.jobId
+							WHERE users.emp_id = :emp");
 				$hr->bind(":emp",$row['user_id']);
 				$getUser = $hr->fetch();
 				if(!empty($getUser)){
 					$userName = $getUser['name'];
+					$userImg  = "http://iravin.com/devteam/attendance/assets/profileImages/".$getUser['img'];
+					$userJob  = $getUser['job'];
 				}else{
 					$userName = "User Name";
+					$userImg  = "http://iravin.com/devteam/attendance/assets/profileImages/avatar-1-xl.jpg";
+					$userJob  = "User Role";
 				}
 
 				$data .= '<li class="messages-item">
-							<img class="messages-item-avatar" src="assets/images/avatar-1.jpg" alt="">
+							<img class="messages-item-avatar" src="'.$userImg.'" alt="">
 							<span class="messages-item-from">'.$userName.'</span>';
 							
 				if($row['attach_group_id'] != 0){
@@ -162,7 +169,7 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 							</span>';
 				}
 							
-				$data .= '<span class="messages-item-subject">User role</span>
+				$data .= '<span class="messages-item-subject">'.$userJob.'</span>
 							<span class="messages-item-preview">'.$row['comment_desc'].'<input type="hidden" name="commentor" class="commentor" value="'.$row['user_id'].'" /></span>
 						</li>';
 			}

@@ -244,17 +244,24 @@
 												$comments = $db->fetchAll();
 												if(!empty($comments)){
 													foreach($comments AS $row){
-														$hr->query("SELECT * FROM users WHERE emp_id = :emp");
+														$hr->query("SELECT users.*, jobs.job FROM users
+																	INNER JOIN employees ON users.emp_id = employees.emp_id
+																	INNER JOIN jobs ON employees.job_id = jobs.jobId
+																	WHERE users.emp_id = :emp");
 														$hr->bind(":emp",$row['user_id']);
 														$getUser = $hr->fetch();
 														if(!empty($getUser)){
 															$userName = $getUser['name'];
+															$userImg  = "http://iravin.com/devteam/attendance/assets/profileImages/".$getUser['img'];
+															$userJob  = $getUser['job'];
 														}else{
 															$userName = "User Name";
+															$userImg  = "http://iravin.com/devteam/attendance/assets/profileImages/avatar-1-xl.jpg";
+															$userJob  = "User role";
 														}
 											?>
 														<li class="messages-item">
-															<img class="messages-item-avatar" src="assets/images/avatar-1.jpg" alt="">
+															<img class="messages-item-avatar" src="<?php echo $userImg; ?>" alt="">
 															<span class="messages-item-from"><?php echo $userName; ?></span>
 															<?php 
 																if($row['attach_group_id'] != 0){
@@ -265,7 +272,7 @@
 															<?php
 																}
 															?>
-															<span class="messages-item-subject">User role</span>
+															<span class="messages-item-subject"><?php echo $userJob; ?></span>
 															<span class="messages-item-preview"><?php echo $row['comment_desc'] ?><input type="hidden" name="commentor" class="commentor" value="<?php echo $row['user_id']; ?>" /></span>
 														</li>
 											<?php
