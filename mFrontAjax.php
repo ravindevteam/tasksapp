@@ -192,13 +192,30 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 		);
 	echo json_encode($array_res);
 }if(!empty($_POST['action']) && $_POST['action'] == "disputAction"){
-	// $task = $_POST['task'];
-	// $creator = $_POST['creator'];
-	// $hr->query("SELECT users.emp_id FROM users
-	// 			INNER JOIN emp_loc ON users.job_id = emp_loc.job_id
-	// 			INNER JOIN 
-	// 			WHERE ");
+	$task    = $_POST['task'];
+	$creator = $_POST['creator'];
+	$emps    = array();
+	$hr->query("SELECT emp_loc.emp_id FROM emp_loc
+				INNER JOIN employees ON emp_loc.job_id = employees.job_id
+				WHERE employees.emp_id = :emp");
+	$hr->bind(":emp",$creator);
+	$getManagers = $hr->fetchAll();
+	if(!empty($getManagers)){
+		foreach($getManagers AS $row){
+			array_push($emps, $row['emp_id']);
+		}
+	}
+
+	if(!empty($emps)){
+		for($i = 0; $i < count($emps); $i++){
+			//HERE WE GONNA INSERT THE FOLLOWERS AND SEND A NOTIFICATION
+		}
+	}else{
+		$res = 2;
+	}
+	echo $res;
 }
+//CLOSE ALL CONNECTIONS
 $db->closeConn();
 $hr->closeConn();
 ////////////////////////////////////////////////////////////////////////////
