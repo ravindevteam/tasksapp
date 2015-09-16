@@ -246,8 +246,13 @@ var FormValidator = function () {
                     url: "yFrontAjax.php",
                     data: {"action": "addTask", "creatorId": creatorId, "assigneeId": assigneeId, "locId": locId, "date": date, "repeat": repeat, "title": title, "desc": desc, "attachId": attachId, "formId": formId, "followersIds": followersIds}
                 }).done(function(html) {
-                    successHandler2.show();
-                    errorHandler2.hide();
+                    if(html == 1){
+                        successHandler2.show();
+                        errorHandler2.hide();
+                    }else{
+                        successHandler2.hide();
+                        errorHandler2.show(); 
+                    } 
                 });
                 // submit form
                 //$('#form2').submit();

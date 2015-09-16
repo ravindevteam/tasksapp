@@ -2,6 +2,7 @@
 session_start();
 require_once("classes/tasksConnection.php");
 require_once("classes/hrConnection.php");
+require_once("_inc/mFunctions.php");
 
 $hr_db = new hr();
 
@@ -37,54 +38,105 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 	$desc         = $_REQUEST['desc'];
 	$attachId     = $_REQUEST['attachId'];
 	$formId       = $_REQUEST['formId'];
-	$followersIds = $_REQUEST['followersIds']
+	$followersIds = $_REQUEST['followersIds'];
+	$followersArr = array();
 
 	if($attachId == 'e'){
 		$attachId = '';
 	}
 	if($date != ''){
 		$date_arr  = explode("-", $date);
-		$startDate = date_format($date_arr[0], 'Y-m-d');
-		$endDate   = date_format($date_arr[1], 'Y-m-d');
+		$startDate = date("d-m-Y", strtotime($date_arr[0]));
+		$endDate   = date("d-m-Y", strtotime($date_arr[1]));
 	}else{
 		$startDate = '';
 		$endDate   = '';
 	}
 
+	//get creator of task information
+	$q  = "SELECT * FROM `users` WHERE emp_id = :emp_id";
+	$sq = $hr_db->query($q);
+	$hr_db->bind(":emp_id", $creatorId);
+	$sq = $hr_db->execute();
+	$getCreator = $hr_db->fetchAll();
+	if(!empty($getCreator)){
+		foreach($getCreator as $create){
+			$craetorName = $create['name'];
+		}
+	}
+
+	//get creator of task information
+	$q  = "SELECT * FROM `users` WHERE emp_id = :emp_id";
+	$sq = $hr_db->query($q);
+	$hr_db->bind(":emp_id", $assigneeId);
+	$sq = $hr_db->execute();
+	$getAssignee = $hr_db->fetchAll();
+	if(!empty($getAssignee)){
+		foreach($getAssignee as $assign){
+			$assigneeName = $assign['name'];
+		}
+	}
+
 	try{
 		$db->beginTransaction();
+		//adding task details into database
 		$q  = "INSERT INTO tasks (creator_id, assignee_id, loc_id, start_date, due_date, repeat, title, 'desc', attach_group_id, status)
 			   VALUES (:creator_id, :assignee_id, :loc_id, :start_date, :due_date, :repeat, :title, :des, :attach_group_id, 1)";
-		$sq = $db1->query($q);
-		$db1->bind(":creator_id", $creatorId);
-		$db1->bind(":assignee_id", $assigneeId);
-		$db1->bind(":loc_id", $locId);
-		$db1->bind(":start_date", $startDate);
-		$db1->bind(":due_date", $endDate);
-		$db1->bind(":repeat", $repeat);
-		$db1->bind(":title", $title);
-		$db1->bind(":des", $desc);
-		$db1->bind(":attach_group_id", $attachId);
-		$sq = $db1->execute();
+		$sq = $db->query($q);
+		$db->bind(":creator_id", $creatorId);
+		$db->bind(":assignee_id", $assigneeId);
+		$db->bind(":loc_id", $locId);
+		$db->bind(":start_date", $startDate);
+		$db->bind(":due_date", $endDate);
+		$db->bind(":repeat", $repeat);
+		$db->bind(":title", $title);
+		$db->bind(":des", $desc);
+		$db->bind(":attach_group_id", $attachId);
+		$sq = $db->execute();
 		if($sq){
+			//add followers of task if exist
 			if($followersIds != ''){
 				$cond = count($followersIds);
+				//get task_id 
 				$db->query("SET @lastId = (SELECT task_id FROM tasks ORDER BY task_id DESC LIMIT 1)");
 				$sql = $db->execute();
 				for($i = 0; $i < $cond; $i++){
+					array_push($followersArr, $followersIds[$i]);
 					$db->query("INSERT INTO tasks_followers (task_id, follower_id)
 								 VALUES (@lastId, :follower_id)");
 					$db->bind(":follower_id", $followersIds[$i]);
 					$sq = $db->execute();
 				}
 			}
+			//add task to notifications
+			//first for assignee user
+			if($repeat != ''){
+				if ($repeat == 1){
+					$repeatPeriod = 'daily';
+				}else if ($repeat == 2){
+					$repeatPeriod = 'weekly';
+				}else if ($repeat == 3){
+					$repeatPeriod = 'monthly';
+				}else{
+					$repeatPeriod = 'annually';
+				}
+			}else{
+				$repeatPeriod = 'from '.$startDate.' to '.$endDate.'';
+			}
+			$nontification = 'You have a task '.$title.' from '.$craetorName.' to '.$desc.' with period '.$repeatPeriod.'.';
+			mInsertNotification($db,$assigneeId,$nontification);
+			//second for followers
+			$notifications = 'You are follower on a task '.$title.' from '.$craetorName.' to '.$assigneeName.' to '.$desc.' with period '.$repeatPeriod.'.';
+			mInsertNotification($db,$followersArr,$notifications);
 		}
+		$db->endTransaction();
+		$flag = 1;
 	}catch (Exception $e) {
-			$flag = 0;
-			$db->cancelTransaction();
+		$flag = 0;
+		$db->cancelTransaction();
 	}
-	
 
+	echo $flag;
 }
 
 $db->closeConn();

@@ -66,11 +66,11 @@ $hr_db = new hr();
 											<i class="fa fa-times-sign"></i> You have some form errors. Please check below.
 										</div>
 										<div class="successHandler alert alert-success no-display">
-											<i class="fa fa-ok"></i> Your form validation is successful!
+											<i class="fa fa-ok"></i> Task Creation is successful!
 										</div>
 									</div>
 									<div class="col-md-6">
-										<input type="hidden" value="1" id="creator_id">
+										<input type="hidden" value="1343" id="creator_id">
 										<div class="form-group">
 											<label class="control-label">
 												JOB <span class="symbol required"></span>
@@ -227,8 +227,11 @@ $hr_db = new hr();
 											<label class="control-label">
 												Description <span class="symbol required"></span>
 											</label>
-											<div class="summernote"></div>
-											<textarea class="form-control no-display" id="editor1" name="editor1" cols="10" rows="10"></textarea>
+											<div class="noteWrap">
+												<div class="form-group">
+													<textarea class="summernote" placeholder="Write task description here..."></textarea>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
