@@ -544,6 +544,7 @@
 		</script>
 		<script src="assets/js/mfrontscript.js"></script>
 		<script src="assets/js/yfrontscript.js"></script>
+		<script src="assets/js/yupload_script.js"></script>
 	</body>
 	<!-- end: BODY -->
 </html>

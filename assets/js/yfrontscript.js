@@ -1,74 +1,47 @@
-/************************** start of taskDetails.php ********************/
-var mPageName  = "mFrontAjax.php";
-var mAjaxFlag = 0;
-//intial star rating plugin
-$(".taskRating").rating({min:0, max:5, step:1,stars:5,size:'xs',glyphicon:false});
-
-//script to confirm the rating
-$(".taskRating").on('rating.change', function(event, value, caption){
-	$(".mRate").attr("data-value",value);
-	$(".rate-config").click();
-});
-$("body").on("click",".mRate",function(){
-	var taskId = $("#mTaskId").val();
-	var value  = $(this).attr("data-value");
-	$(".confirmRate").html("Are you sure you want to rate this task with (" + value + ") stars");
-	var postData = {'taskId':taskId,'value':value,'action':'RateTask'};
-	if(mAjaxFlag == 0){
-		mAjaxFlag = 1;
+var yPageName  = "yFrontAjax.php";
+//****************Creat task page*******************//
+//script to get employees names
+$("#selJob").select2("val").on('change', function(){
+	var jobId  = $("#selJob").select2("val");
+	if (jobId != "") {
 		$.ajax({
-			url:mPageName,
-	        type:"POST",
-	        data:postData,
-	        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
-	        success: function(result){
-	        	mAjaxFlag = 0;
-	        	if(result != 2){
-	        		alert("Rated successfully");
-	        		$(".mRate").attr("data-value","");
-	        		$(".mCancel").click();
-	        	}else{
-	        		alert("Failed to rate please try again later");
-	        		$(".mRate").attr("data-value","");
-	        		$(".mCancel").click();
-	        	}
-	        },
-	        error: function(){
-	        	mAjaxFlag = 0;
-	        }
+			url: yPageName,
+			data: {"action": "getEmployees", "jobId": jobId}
+		}).done(function(html) {
+			$("#selEmps").html("");
+			$("#selEmps").html(html);
 		});
 	}
 });
-
-$("body").on("click",".mAttachs",function(){
-	var attachId = $(this).attr("data-attach");
-	var postData = {'attachId':attachId,'action':'showAttachs'};
-	if(mAjaxFlag == 0){
-		mAjaxFlag = 1;
-		$.ajax({
-			url:mPageName,
-	        type:"POST",
-	        data:postData,
-	        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
-	        success: function(result){
-	        	mAjaxFlag = 0;
-	        	if(result != ""){
-	        		$("#mResDiv").html(result);
-	        		$.subview({
-					  content: "#mShowAttachs",
-					  startFrom: "right",
-					  onShow: function(){
-					    $(".back-subviews").remove();
-					  }
-					});
-	        	}else{
-	        		alert("There is no attaches in this task");
-	        	}
-	        },
-	        error: function(){
-	        	mAjaxFlag = 0;
-	        }
+//script to get task type
+$('input.type-callback').on('ifChecked', function(event) {
+	var value = $(this).val();
+	if(value == 1){
+		$(".repeated").show();
+		$(".normal").hide();
+		$("#taskDate").removeAttr("name");
+		$(".yperiod").each(function(){
+			$(this).attr('name','services');
+		});
+	}else if (value == 2){
+		$(".repeated").hide();
+		$(".normal").show();
+		$("#taskDate").attr('name', 'taskDate');
+		$(".yperiod").each(function(){
+			$(this).removeAttr("name");
 		});
 	}
 });
-/*************************** end oftaskDetails.php **********************/
+//script to view the attachments of the task
+$("body").on("click",".yUpload",function(){
+	$.subview({
+      content: "#yfileUpload",
+      startFrom: "right",
+      onShow: function(){
+        $(".back-subviews").remove();
+      },
+      onClose: function(){
+        $.hideSubview();
+      }
+    });
+});

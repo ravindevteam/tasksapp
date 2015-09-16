@@ -59,7 +59,7 @@ $hr_db = new hr();
 						<div class="panel-body">
 							<h2><i class="fa fa-pencil-square"></i> NEW TASK</h2>
 							<hr>
-							<form action="#" role="form" id="form2">
+							<form action="<? $_SERVER['PHP_SELF']; ?>" role="form" id="form2">
 								<div class="row">
 									<div class="col-md-12">
 										<div class="errorHandler alert alert-danger no-display">
@@ -70,11 +70,12 @@ $hr_db = new hr();
 										</div>
 									</div>
 									<div class="col-md-6">
+										<input type="hidden" value="1" id="creator_id">
 										<div class="form-group">
 											<label class="control-label">
 												JOB <span class="symbol required"></span>
 											</label>
-											<select class="form-control search-select dropdown" id="form-field-select-3" name="dropdown">
+											<select class="form-control search-select selJob" id="selJob" name="selJob">
 											<?php
 											//get all jobs
 											$q  = "SELECT * FROM `jobs` ORDER BY jobId";
@@ -94,19 +95,15 @@ $hr_db = new hr();
 											<label class="control-label">
 												EMPLOYEE <span class="symbol required"></span>
 											</label>
-											<select class="form-control search-select dropdown" name="dropdown">
+											<select class="form-control search-select selEmps" id="selEmps" name="selEmps">
 												<option value="">Select...</option>
-												<option value="EMPLOYEE 1">EMPLOYEE 1</option>
-												<option value="EMPLOYEE 2">EMPLOYEE 2</option>
-												<option value="EMPLOYEE 3">EMPLOYEE 5</option>
-												<option value="EMPLOYEE 4">EMPLOYEE 4</option>
 											</select>
 										</div>
 										<div class="form-group">
 											<label class="control-label">
 												BRANCH
 											</label>
-											<select class="form-control search-select" id="dropdown" name="dropdown">
+											<select class="form-control search-select selBranchs" id="selBranchs" name="selBranchs">
 											<?php
 											//get all lcations
 											$q  = "SELECT * FROM `locations` ORDER BY locId";
@@ -124,115 +121,102 @@ $hr_db = new hr();
 										</div>
 										<div class="form-group">
 											<label class="control-label">
-												FOLLOWERS <span class="symbol required"></span>
+												FOLLOWERS
 											</label>
-											<select multiple="multiple" id="form-field-select-4" class="form-control search-select">
-												<option value="">Select...</option>
-												<option value="follower 1">follower 1</option>
-												<option value="follower 2">follower 2</option>
-												<option value="follower 3">follower 5</option>
-												<option value="follower 4">follower 4</option>
+											<select multiple="multiple" id="form-field-select-4" class="form-control search-select selFollowers" placeholder="select followers">
+											<?php
+											//get all employees
+											$q  = "SELECT * FROM `employees` ORDER BY emp_id";
+											$sq = $hr_db->query($q);
+											$sq = $hr_db->execute();
+											$getEmployees = $hr_db->fetchAll();
+											if(!empty($getEmployees)){
+												foreach($getEmployees as $employees){
+													echo "<option value='".$employees['emp_id']."'>".$employees['emp_name']."</option>";
+												}
+											}
+											?>
 											</select>
 										</div>
 										<div class="form-group">
 											<label class="control-label">
 												TASK TITLE <span class="symbol required"></span>
 											</label>
-											<input type="text" placeholder="Insert task title" class="form-control" id="firstname2" name="firstname2">
+											<input type="text" placeholder="Insert task title" class="form-control" id="taskTitle" name="taskTitle">
 										</div>
 										<div class="form-group">
 											<label class="control-label">
 												FORMS 
 											</label>
-											<select class="form-control search-select" id="dropdown" name="dropdown">
+											<select class="form-control search-select forms" id="forms" name="forms">
 												<option value="">Select...</option>
-												<option value="Form 1">Form 1</option>
-												<option value="Form 2">Form 2</option>
-												<option value="Form 3">Form 5</option>
-												<option value="Form 4">Form 4</option>
+												<option value="1">Form 1</option>
+												<option value="2">Form 2</option>
+												<option value="3">Form 3</option>
+												<option value="4">Form 4</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-md-6">
-										<div class="radio">
-											<label>
-												<input type="radio" value="" name="optionsRadios2" class="grey required">
-												Repeated task
-											</label>
-										</div>
 										<div class="form-group">
-											<div style="margin-left:20px;">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" class="grey" value="" name="services" id="service1">
-														Daily
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" class="grey" value="" name="services"  id="service2">
-														Weekly
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" class="grey" value="" name="services"  id="service3">
-														Monthly
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" class="grey" value="" name="services"  id="service4">
-														Annually
-													</label>
-												</div>
-											</div>
-										</div>
-										<div class="radio">
-											<label>
-												<input type="radio" value="" name="optionsRadios2" class="grey">
-												Normal task
+											<label class="control-label">
+												Type <span class="symbol required"></span>
 											</label>
-										</div>
-										<div style="margin-left:20px;">
-											<p>
-												Start Date 
-											</p>
-											<div class="input-group">
-												<input type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" class="form-control date-picker">
-												<span class="input-group-addon"> <i class="fa fa-calendar"></i> </span>
+											<div>
+												<label class="radio-inline">
+													<input type="radio" class="grey type-callback" value="1" name="taskType" id="repeatedType">
+													Repeated task
+												</label>
+												<label class="radio-inline">
+													<input type="radio" class="grey type-callback" value="2" name="taskType"  id="normalType">
+													Normal task
+												</label>
 											</div>
-											<p>
-												End Date 
-											</p>
-											<div class="input-group">
-												<input type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" class="form-control date-picker">
-												<span class="input-group-addon"> <i class="fa fa-calendar"></i> </span>
+										</div>
+										<div id="tasksType">
+											<div class="form-group">
+												<div class="repeated" style="display:none">
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" class="grey yperiod" value="1" name="services" id="service1">
+															Daily
+														</label>
+													</div>
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" class="grey yperiod" value="2" name="services"  id="service2">
+															Weekly
+														</label>
+													</div>
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" class="grey yperiod" value="3" name="services"  id="service3">
+															Monthly
+														</label>
+													</div>
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" class="grey yperiod" value="4" name="services"  id="service4">
+															Annually
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="normal" style="display:none">
+												<div class="form-group">
+													<label class="control-label">
+														Date Range <span class="symbol required"></span>
+													</label>
+													<div class="input-group">
+														<span class="input-group-addon"> <i class="fa fa-calendar"></i> </span>
+														<input type="text" class="form-control date-range" id="taskDate" name="taskDate">
+													</div>
+												</div>
 											</div>
 										</div><br />
 										<div class="form-group">
 											<div class="col-sm-12">
-												<label>
-													Upload File
-												</label>
-												<div class="fileupload fileupload-new" data-provides="fileupload">
-													<div class="input-group">
-														<div class="form-control uneditable-input">
-															<i class="fa fa-file fileupload-exists"></i>
-															<span class="fileupload-preview"></span>
-														</div>
-														<div class="input-group-btn">
-															<div class="btn btn-light-grey btn-file">
-																<span class="fileupload-new"><i class="fa fa-folder-open-o"></i> Select file</span>
-																<span class="fileupload-exists"><i class="fa fa-folder-open-o"></i> Change</span>
-																<input type="file" class="file-input">
-															</div>
-															<a href="#" class="btn btn-light-grey fileupload-exists" data-dismiss="fileupload">
-																<i class="fa fa-times"></i> Remove
-															</a>
-														</div>
-													</div>
-												</div>
+												<button class="btn btn-dark-grey yUpload" type="button"> Upload files </button>
 											</div>
 										</div>
 									</div>
@@ -270,6 +254,32 @@ $hr_db = new hr();
 				</div>
 			</div>
 			<!-- end: PAGE CONTENT-->
+		</div>
+		<div class="no-display" id="yfileUpload">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-white">
+						<div class="panel-body">
+							<!-- <form method="post" id="yTaskAttach" enctype="multipart/form-data"> -->
+								<div class="fileupload fileupload-new" data-provides="fileupload">
+									<input type="hidden" value="" name=""> 
+									<span class="btn btn-file btn-light-grey">
+										<i class="fa fa-folder-open-o"></i>
+										<span class="fileupload-new">Select file</span>
+										<span class="fileupload-exists">Upload anthor</span>
+										<input type="file" id="yfile" name="yfile" />
+									</span>
+									<span class="fileupload-preview"></span>
+									<a class="close fileupload-exists float-none" href="#" data-dismiss="fileupload"> × </a>
+								</div>
+								<input type="hidden" value="e" name="attach_id" class="attach_id">
+							<!-- </form> -->
+							<div id="yAttachResults">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="subviews">
 			<div class="subviews-container"></div>

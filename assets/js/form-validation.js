@@ -58,6 +58,9 @@ var FormValidator = function () {
                 gender: {
                     required: true
                 },
+                taskType: {
+                    required: true
+                },
                 zipcode: {
                     required: true,
                     number: true,
@@ -77,7 +80,8 @@ var FormValidator = function () {
                     required: "We need your email address to contact you",
                     email: "Your email address must be in the format of name@domain.com"
                 },
-                gender: "Please check a gender!"
+                gender: "Please check a gender!",
+                taskType: "Please check a type of task!"
             },
             groups: {
                 DateofBirth: "dd mm yyyy",
@@ -138,8 +142,17 @@ var FormValidator = function () {
             },
             ignore: "",
             rules: {
-                firstname2: {
+                taskTitle: {
                     minlength: 2,
+                    required: true
+                },
+                selJob: {
+                    required: true
+                },
+                selEmps: {
+                    required: true
+                },
+                selEmps: {
                     required: true
                 },
                 lastname2: {
@@ -157,16 +170,21 @@ var FormValidator = function () {
                     required: true
                 },
                 services: {
-                    required: true,
-                    minlength: 2
+                    required: true
                 },
                 creditcard: {
                     required: true,
                     creditcard: true
                 },
+                taskType: {
+                    required: true
+                },
                 url: {
                     required: true,
                     url: true
+                },
+                taskDate: {
+                    required: true,
                 },
                 zipcode2: {
                     required: true,
@@ -184,12 +202,14 @@ var FormValidator = function () {
             messages: {
                 firstname: "Please specify your first name",
                 lastname: "Please specify your last name",
+                lastname: "Please specify your last name",
+                taskDate: "Please specify start date and end date!",
                 email: {
                     required: "We need your email address to contact you",
                     email: "Your email address must be in the format of name@domain.com"
                 },
                 services: {
-                    minlength: jQuery.format("Please select  at least {0} types of Service")
+                    minlength: jQuery.format("Please select  at least {1} types of tasks")
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
@@ -212,8 +232,23 @@ var FormValidator = function () {
                 $(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
             },
             submitHandler: function (form) {
-                successHandler2.show();
-                errorHandler2.hide();
+                var creatorId    = $("#creator_id").val();
+                var assigneeId   = $("#selEmps").select2("val");
+                var locId        = $("#selBranchs").select2("val");
+                var date         = $("#taskDate").val();
+                var repeat       = $(".yperiod").val();
+                var title        = $("#taskTitle").val();
+                var desc         = $(".note-editable").html();
+                var attachId     = $(".attach_id").val();
+                var formId       = $("#forms").select2("val");
+                var followersIds = $(".selFollowers").select2("val"); 
+                $.ajax({
+                    url: "yFrontAjax.php",
+                    data: {"action": "addTask", "creatorId": creatorId, "assigneeId": assigneeId, "locId": locId, "date": date, "repeat": repeat, "title": title, "desc": desc, "attachId": attachId, "formId": formId, "followersIds": followersIds}
+                }).done(function(html) {
+                    successHandler2.show();
+                    errorHandler2.hide();
+                });
                 // submit form
                 //$('#form2').submit();
             }
