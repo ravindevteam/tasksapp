@@ -81,7 +81,8 @@ var FormValidator = function () {
                     email: "Your email address must be in the format of name@domain.com"
                 },
                 gender: "Please check a gender!",
-                taskType: "Please check a type of task!"
+                taskType: "Please check a type of task!",
+                period: "Please check a type of repeated task!"
             },
             groups: {
                 DateofBirth: "dd mm yyyy",
@@ -179,6 +180,9 @@ var FormValidator = function () {
                 taskType: {
                     required: true
                 },
+                period: {
+                    required: true
+                },
                 url: {
                     required: true,
                     url: true
@@ -232,19 +236,34 @@ var FormValidator = function () {
                 $(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
             },
             submitHandler: function (form) {
+                var dateName     = document.getElementById("taskDate").getAttribute("name");
+                var repeat       = $('.repeated input:radio:checked').val()
                 var creatorId    = $("#creator_id").val();
                 var assigneeId   = $("#selEmps").select2("val");
                 var locId        = $("#selBranchs").select2("val");
                 var date         = $("#taskDate").val();
-                var repeat       = $(".yperiod").val();
                 var title        = $("#taskTitle").val();
                 var desc         = $(".note-editable").html();
                 var attachId     = $(".attach_id").val();
                 var formId       = $("#forms").select2("val");
-                var followersIds = $(".selFollowers").select2("val"); 
+                var followersIds = new Array();
+
+                $("select.selFollowers").find("option:selected").each(function(){
+                    followersIds.push($(this).val());
+                });
+                if(followersIds.length > 0){
+                    followersIds = $.unique(followersIds);
+                }
+                if(dateName == null){
+                    date = '';
+                }else{
+                    repeat = '';
+                }
+
                 $.ajax({
                     url: "yFrontAjax.php",
-                    data: {"action": "addTask", "creatorId": creatorId, "assigneeId": assigneeId, "locId": locId, "date": date, "repeat": repeat, "title": title, "desc": desc, "attachId": attachId, "formId": formId, "followersIds": followersIds}
+                    data: {"action": "addTask", "creatorId": creatorId, "assigneeId": assigneeId, "locId": locId, "date": date, "repeat": repeat, "title": title, "desc": desc, "attachId": attachId, "formId": formId, "followersIds": followersIds},
+                    scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8"
                 }).done(function(html) {
                     if(html == 1){
                         successHandler2.show();

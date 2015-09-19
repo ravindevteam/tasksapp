@@ -21,8 +21,9 @@ $('input.type-callback').on('ifChecked', function(event) {
 		$(".normal").hide();
 		$("#taskDate").removeAttr("name");
 		$(".yperiod").each(function(){
-			$(this).attr('name','services');
+			$(this).attr('name','period');
 		});
+		$(".date-range").val();
 	}else if (value == 2){
 		$(".repeated").hide();
 		$(".normal").show();
@@ -30,6 +31,7 @@ $('input.type-callback').on('ifChecked', function(event) {
 		$(".yperiod").each(function(){
 			$(this).removeAttr("name");
 		});
+		$('input:radio[name="period"]').removeClass("active");
 	}
 });
 //script to view the attachments of the task

@@ -1,5 +1,7 @@
 <?php
 require_once("_inc/header.php");
+$db = new db();
+$userId = 1343;
 ?>
 				<!-- start: BREADCRUMB -->
 				<div class="row">
@@ -40,7 +42,16 @@ require_once("_inc/header.php");
 							</ul>
 							<div class="tab-content">
 								<div id="panel_overview" class="tab-pane fade in active">
-									<table class="table table-striped table-bordered table-hover tasks" id="projects">
+									<?php
+									//get tasks assigned to me
+									$q  = "SELECT * FROM `tasks` WHERE assignee_id = :id";
+									$sq = $db->query($q);
+									$db->bind(":id", $userId);
+									$sq = $db->execute();
+									$getAssigneeTo = $db->fetchAll();
+									if(!empty($getAssigneeTo)){
+									?>
+									<table class="table table-striped table-bordered table-hover tasks" id="assignedToMe">
 										<thead>
 											<tr>
 												<th>Task Title</th>
@@ -49,16 +60,47 @@ require_once("_inc/header.php");
 											</tr>
 										</thead>
 										<tbody>
+											<?php
+											foreach($getAssigneeTo as $assignToMe){
+											?>
 											<tr>
-												<td><a href="#">IT Help Desk</a></td>
-												<td class="hidden-xs">Master Company</td>
-												<td>11 november 2014</td>
-											</tr>
+												<td><a href="taskDetails.php? k=<?php echo $assignToMe['task_id'] ?>"><?php echo $assignToMe['title'] ?></a></td>
+												<td class="hidden-xs"><?php echo $assignToMe['start_date'] ?></td>
+												<td><?php echo $assignToMe['due_date'] ?></td>
+											</tr>	
+											<?php
+											} 
+											?>
+											
 										</tbody>
 									</table>
+									<?php
+									}else{
+									?>
+									<div class="alert alert-success">
+										<ul class="fa-ul">
+											<li>
+												<i class="fa fa-info-circle fa-lg fa-li"></i>
+												There is no tasks assigned to you.
+											</li>
+										</ul>
+									</div>
+									<?php
+									}
+									?>
+									
 								</div>
 								<div id="panel_edit_account" class="tab-pane fade">
-									<table class="table table-striped table-bordered table-hover tasks" id="projects">
+									<?php
+									//get tasks assigned to me
+									$q  = "SELECT * FROM `tasks` WHERE creator_id = :id";
+									$sq = $db->query($q);
+									$db->bind(":id", $userId);
+									$sq = $db->execute();
+									$getAssigneeBy = $db->fetchAll();
+									if(!empty($getAssigneeBy)){
+									?>
+									<table class="table table-striped table-bordered table-hover tasks" id="assignedByMe">
 										<thead>
 											<tr>
 												<th>Task Title</th>
@@ -67,16 +109,47 @@ require_once("_inc/header.php");
 											</tr>
 										</thead>
 										<tbody>
+											<?php
+											foreach($getAssigneeBy as $assignByMe){
+											?>
 											<tr>
-												<td><a href="#">IT Help Desk</a></td>
-												<td class="hidden-xs">Master Company</td>
-												<td>11 november 2014</td>
-											</tr>
+												<td><a href="taskDetails.php? k=<?php echo $assignByMe['task_id'] ?>"><?php echo $assignByMe['title'] ?></a></td>
+												<td class="hidden-xs"><?php echo $assignByMe['start_date'] ?></td>
+												<td><?php echo $assignByMe['due_date'] ?></td>
+											</tr>	
+											<?php
+											} 
+											?>
 										</tbody>
 									</table>
+									<?php
+									}else{
+									?>
+									<div class="alert alert-success">
+										<ul class="fa-ul">
+											<li>
+												<i class="fa fa-info-circle fa-lg fa-li"></i>
+												There is no tasks assigned by you.
+											</li>
+										</ul>
+									</div>
+									<?php
+									}
+									?>
 								</div>
 								<div id="panel_projects" class="tab-pane fade">
-									<table class="table table-striped table-bordered table-hover tasks" id="projects">
+									<?php
+									//get tasks assigned to me
+									$q  = "SELECT tasks.task_id, tasks.title, tasks.start_date, tasks.due_date, tasks.repeat FROM `tasks`
+										   JOIN `tasks_followers` on tasks_followers.task_id = tasks.task_id
+											WHERE tasks_followers.follower_id = :fid";
+									$sq = $db->query($q);
+									$db->bind(":fid", $userId);
+									$sq = $db->execute();
+									$getFollowers = $db->fetchAll();
+									if(!empty($getFollowers)){
+									?>
+									<table class="table table-striped table-bordered table-hover tasks" id="Follower">
 										<thead>
 											<tr>
 												<th>Task Title</th>
@@ -85,13 +158,33 @@ require_once("_inc/header.php");
 											</tr>
 										</thead>
 										<tbody>
+											<?php
+											foreach($getFollowers as $follow){
+											?>
 											<tr>
-												<td><a href="#">IT Help Desk</a></td>
-												<td class="hidden-xs">Master Company</td>
-												<td>11 november 2014</td>
-											</tr>
+												<td><a href="taskDetails.php? k=<?php echo $follow['task_id'] ?>"><?php echo $follow['title'] ?></a></td>
+												<td class="hidden-xs"><?php echo $follow['start_date'] ?></td>
+												<td><?php echo $follow['due_date'] ?></td>
+											</tr>	
+											<?php
+											} 
+											?>
 										</tbody>
 									</table>
+									<?php
+									}else{
+									?>
+									<div class="alert alert-success">
+										<ul class="fa-ul">
+											<li>
+												<i class="fa fa-info-circle fa-lg fa-li"></i>
+												There is no tasks assigned by you.
+											</li>
+										</ul>
+									</div>
+									<?php
+									}
+									?>
 								</div>
 							</div>
 						</div>

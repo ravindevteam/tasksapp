@@ -5,6 +5,7 @@ require_once("classes/hrConnection.php");
 require_once("_inc/mFunctions.php");
 
 $hr_db = new hr();
+$db    = new db();
 
 if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "getEmployees") {
 
@@ -12,7 +13,9 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "getEmployees") {
 	$data  = '';
 
 	//get employees under this job
-	$q  = "SELECT * FROM `employees` WHERE job_id = :jobId ORDER BY emp_id";
+	$q  = "SELECT users.emp_id, users.name FROM `users` 
+		   JOIN `employees` on employees.emp_id = users.emp_id
+		   WHERE employees.job_id = :jobId ORDER BY emp_id";
 	$sq = $hr_db->query($q);
 	$hr_db->bind(":jobId", $jobId);
 	$sq = $hr_db->execute();
@@ -20,7 +23,7 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "getEmployees") {
 	if(!empty($getEmployees)){
 			$data .= "<option value=''>Select...</option>";
 		foreach($getEmployees as $Employees){
-			$data .= "<option value='".$Employees['emp_id']."'>".$Employees['emp_name']."</option>";
+			$data .= "<option value='".$Employees['emp_id']."'>".$Employees['name']."</option>";
 		}
 	}
 
@@ -38,7 +41,11 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 	$desc         = $_REQUEST['desc'];
 	$attachId     = $_REQUEST['attachId'];
 	$formId       = $_REQUEST['formId'];
-	$followersIds = $_REQUEST['followersIds'];
+	if(!empty($_REQUEST['followersIds'])){
+		$followersIds = $_REQUEST['followersIds'];
+	}else{
+		$followersIds = '';
+	}
 	$followersArr = array();
 
 	if($attachId == 'e'){
@@ -46,8 +53,8 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 	}
 	if($date != ''){
 		$date_arr  = explode("-", $date);
-		$startDate = date("d-m-Y", strtotime($date_arr[0]));
-		$endDate   = date("d-m-Y", strtotime($date_arr[1]));
+		$startDate = date("Y-m-d", strtotime($date_arr[0]));
+		$endDate   = date("Y-m-d", strtotime($date_arr[1]));
 	}else{
 		$startDate = '';
 		$endDate   = '';
@@ -80,7 +87,7 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 	try{
 		$db->beginTransaction();
 		//adding task details into database
-		$q  = "INSERT INTO tasks (creator_id, assignee_id, loc_id, start_date, due_date, repeat, title, 'desc', attach_group_id, status)
+		$q  = "INSERT INTO tasks (creator_id, assignee_id, loc_id, start_date, due_date, `repeat`, title, `desc`, attach_group_id, status)
 			   VALUES (:creator_id, :assignee_id, :loc_id, :start_date, :due_date, :repeat, :title, :des, :attach_group_id, 1)";
 		$sq = $db->query($q);
 		$db->bind(":creator_id", $creatorId);
@@ -107,6 +114,8 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 					$db->bind(":follower_id", $followersIds[$i]);
 					$sq = $db->execute();
 				}
+				$notifications = 'You are follower on a task '.$title.' from '.$craetorName.' to '.$assigneeName.' to '.$desc.' with period '.$repeatPeriod.'.';
+				mInsertNotification($db,$followersArr,$notifications);
 			}
 			//add task to notifications
 			//first for assignee user
@@ -125,9 +134,6 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 			}
 			$nontification = 'You have a task '.$title.' from '.$craetorName.' to '.$desc.' with period '.$repeatPeriod.'.';
 			mInsertNotification($db,$assigneeId,$nontification);
-			//second for followers
-			$notifications = 'You are follower on a task '.$title.' from '.$craetorName.' to '.$assigneeName.' to '.$desc.' with period '.$repeatPeriod.'.';
-			mInsertNotification($db,$followersArr,$notifications);
 		}
 		$db->endTransaction();
 		$flag = 1;

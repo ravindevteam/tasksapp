@@ -126,13 +126,13 @@ $hr_db = new hr();
 											<select multiple="multiple" id="form-field-select-4" class="form-control search-select selFollowers" placeholder="select followers">
 											<?php
 											//get all employees
-											$q  = "SELECT * FROM `employees` ORDER BY emp_id";
+											$q  = "SELECT * FROM `users` ORDER BY emp_id";
 											$sq = $hr_db->query($q);
 											$sq = $hr_db->execute();
 											$getEmployees = $hr_db->fetchAll();
 											if(!empty($getEmployees)){
 												foreach($getEmployees as $employees){
-													echo "<option value='".$employees['emp_id']."'>".$employees['emp_name']."</option>";
+													echo "<option value='".$employees['emp_id']."'>".$employees['name']."</option>";
 												}
 											}
 											?>
@@ -176,27 +176,27 @@ $hr_db = new hr();
 										<div id="tasksType">
 											<div class="form-group">
 												<div class="repeated" style="display:none">
-													<div class="checkbox">
+													<div class="radio">
 														<label>
-															<input type="checkbox" class="grey yperiod" value="1" name="services" id="service1">
+															<input type="radio" value="1" name="period" class="grey repeatedType">
 															Daily
 														</label>
 													</div>
-													<div class="checkbox">
+													<div class="radio">
 														<label>
-															<input type="checkbox" class="grey yperiod" value="2" name="services"  id="service2">
+															<input type="radio" value="2" name="period" class="grey repeatedType">
 															Weekly
 														</label>
 													</div>
-													<div class="checkbox">
+													<div class="radio">
 														<label>
-															<input type="checkbox" class="grey yperiod" value="3" name="services"  id="service3">
+															<input type="radio" value="3" name="period" class="grey repeatedType">
 															Monthly
 														</label>
 													</div>
-													<div class="checkbox">
+													<div class="radio">
 														<label>
-															<input type="checkbox" class="grey yperiod" value="4" name="services"  id="service4">
+															<input type="radio" value="4" name="period" class="grey repeatedType">
 															Annually
 														</label>
 													</div>
@@ -246,7 +246,7 @@ $hr_db = new hr();
 								<div class="row">
 									<div class="col-md-4">
 										<button class="btn btn-yellow btn-block" type="submit">
-											Register <i class="fa fa-arrow-circle-right"></i>
+											Create task <i class="fa fa-arrow-circle-right"></i>
 										</button>
 									</div>
 								</div>
