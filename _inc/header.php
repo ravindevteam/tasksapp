@@ -221,7 +221,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="#" id="logout">
+										<a href="#" class="logout">
 											Log Out
 										</a>
 									</li>
@@ -699,7 +699,7 @@
 						</a>
 					</div>
 					<div class="col-xs-6 text-right no-padding">
-						<a class="btn btn-sm log-out text-right" href="login_login.html">
+						<a class="btn btn-sm log-out text-right logout" href="#">
 							<i class="fa fa-power-off"></i> Log Out
 						</a>
 					</div>

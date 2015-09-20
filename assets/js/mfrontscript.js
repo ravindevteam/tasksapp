@@ -228,7 +228,7 @@ $("body").on("click","#dispute",function(){
 });
 /*************************** end oftaskDetails.php **********************/
 /*************************** header scripts *****************************/
-$("body").on("click", "#logout", function(e){
+$("body").on("click", ".logout", function(e){
 	e.preventDefault();
 	var postData = {'action':'logoutAction'};
 	if(mAjaxFlag == 0){
@@ -240,7 +240,7 @@ $("body").on("click", "#logout", function(e){
 	        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
 	        success: function(result){
 	        	mAjaxFlag = 0;
-	        	
+	        	window.location.href="index.php";
 	        },
 	        error: function(){
 	        	mAjaxFlag = 0;

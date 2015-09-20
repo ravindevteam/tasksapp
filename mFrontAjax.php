@@ -304,7 +304,8 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 	if(!empty($_COOKIE['tasks_cookie'])){
 		unset($_COOKIE['tasks_cookie']);
 	}
-	echo '<script>window.location.href="index.php";</script>';
+	$res =1;
+	echo $res;
 }
 //CLOSE ALL CONNECTIONS
 $db->closeConn();
