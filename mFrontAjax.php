@@ -296,6 +296,15 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 		$flag = 2;
 	}
 	echo $flag;
+}elseif(!empty($_POST['action']) && $_POST['action'] == "logoutAction"){
+	unset($_SESSION['tasks_empId']);
+	unset($_SESSION['tasks_userName']);
+	unset($_SESSION['tasks_userImg']);
+	unset($_SESSION['tasks_isLogged']);
+	if(!empty($_COOKIE['tasks_cookie'])){
+		unset($_COOKIE['tasks_cookie']);
+	}
+	echo '<script>window.location.href="index.php";</script>';
 }
 //CLOSE ALL CONNECTIONS
 $db->closeConn();

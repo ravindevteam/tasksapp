@@ -221,7 +221,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="login_login.html">
+										<a href="#" id="logout">
 											Log Out
 										</a>
 									</li>

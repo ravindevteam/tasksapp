@@ -227,3 +227,26 @@ $("body").on("click","#dispute",function(){
 	}
 });
 /*************************** end oftaskDetails.php **********************/
+/*************************** header scripts *****************************/
+$("body").on("click", "#logout", function(e){
+	e.preventDefault();
+	var postData = {'action':'logoutAction'};
+	if(mAjaxFlag == 0){
+		mAjaxFlag = 1;
+		$.ajax({
+			url:mPageName,
+	        type:"POST",
+	        data:postData,
+	        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
+	        success: function(result){
+	        	mAjaxFlag = 0;
+	        	
+	        },
+	        error: function(){
+	        	mAjaxFlag = 0;
+	        	bootbox.alert("The server is not responding, please try again later");
+	        }
+		});
+	}
+});
+/*************************** end header scripts *************************/
