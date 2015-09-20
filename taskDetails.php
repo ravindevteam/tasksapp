@@ -19,6 +19,7 @@
 							if(empty($_GET['k'])){
 								echo '<script>window.location.href="home.php";</script>';
 							}
+
 						?>
 						<!-- start: PAGE CONTENT -->
 						<div class="row">
@@ -57,7 +58,7 @@
 										<div class="table-responsive">
 											<?php
 												$db->query("SELECT * FROM tasks WHERE task_id = :tsk");
-												$db->bind(":tsk",md5($_GET['k']));
+												$db->bind(":tsk",base64_decode($_GET['k']));
 												$getTask = $db->fetch();
 												if(!empty($getTask)){
 											?>
@@ -226,7 +227,7 @@
 										<input type="hidden" value="<?php echo $assignee; ?>" class="commentor" />
 										<?php
 										$db->query("SELECT follower_id FROM tasks_followers WHERE task_id = :tsk");
-										$db->bind(":tsk",md5($_GET['k']));
+										$db->bind(":tsk",base64_decode($_GET['k']));
 										$getFollowers = $db->fetchAll();
 										if(!empty($getFollowers)){
 											foreach($getFollowers AS $follower){
@@ -239,7 +240,7 @@
 										<ul class="messages-list col-md-12" id="ulComment">
 											<?php
 												$db->query("SELECT * FROM comments WHERE task_id = :tsk");
-												$db->bind(":tsk",md5($_GET['k']));
+												$db->bind(":tsk",base64_decode($_GET['k']));
 												$comments = $db->fetchAll();
 												if(!empty($comments)){
 													foreach($comments AS $row){
