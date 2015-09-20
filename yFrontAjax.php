@@ -114,8 +114,6 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 					$db->bind(":follower_id", $followersIds[$i]);
 					$sq = $db->execute();
 				}
-				$notifications = 'You are follower on a task '.$title.' from '.$craetorName.' to '.$assigneeName.' to '.$desc.' with period '.$repeatPeriod.'.';
-				mInsertNotification($db,$followersArr,$notifications);
 			}
 			//add task to notifications
 			//first for assignee user
@@ -134,6 +132,10 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == "addTask") {
 			}
 			$nontification = 'You have a task '.$title.' from '.$craetorName.' to '.$desc.' with period '.$repeatPeriod.'.';
 			mInsertNotification($db,$assigneeId,$nontification);
+			if($followersIds != ''){
+				$notifications = 'You are follower on a task '.$title.' from '.$craetorName.' to '.$assigneeName.' to '.$desc.' with period '.$repeatPeriod.'.';
+				mInsertNotification($db,$followersArr,$notifications);
+			}
 		}
 		$db->endTransaction();
 		$flag = 1;
