@@ -5,11 +5,11 @@ require_once("_inc/header.php");
 			<div class="row">
 				<div class="col-md-12">
 					<ol class="breadcrumb">
-						<li>
+						<!-- <li>
 							<a href="#">
 								Dashboard
 							</a>
-						</li>
+						</li> -->
 						<li class="active">
 							Home Page
 						</li>
