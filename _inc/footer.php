@@ -2,7 +2,7 @@
 			<footer class="inner">
 				<div class="footer-inner">
 					<div class="pull-left">
-						2014 &copy; Rapido by cliptheme.
+						2015 &copy; Ravin JeanseWear.
 					</div>
 					<div class="pull-right">
 						<span class="go-top"><i class="fa fa-chevron-up"></i></span>

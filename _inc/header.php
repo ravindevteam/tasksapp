@@ -1,7 +1,5 @@
-<?php session_start();
-	if(empty($_SESSION['tasks_isLogged'])){
-		echo '<script>window.location.href="index.php";</script>';
-	}
+<?php
+	session_start();
 	require_once("classes/tasksConnection.php");
 	require_once("classes/hrConnection.php");
 	require_once("classes/tasks.php");
@@ -151,7 +149,7 @@
 					<div class="col-md-4 col-sm-4">
 						<h2>My Info</h2>
 						<address class="margin-bottom-40">
-							<?php if(!empty($_SESSION['tasks_userName'])) echo $_SESSION['tasks_userName']; ?>
+							Peter Clark
 							<br>
 							12345 Street Name, City Name, United States
 							<br>
@@ -189,7 +187,7 @@
 						</a>
 						<!-- start: LOGO -->
 						<a class="navbar-brand" href="index.html">
-							<img src="assets/images/logo.png" alt="Rapido"/>
+							<img src="assets/images/logo1.png" alt="Rapido"/>
 						</a>
 						<!-- end: LOGO -->
 					</div>
@@ -199,8 +197,7 @@
 							<!-- start: USER DROPDOWN -->
 							<li class="dropdown current-user">
 								<a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
-									<!-- assets/images/avatar-1-small.jpg -->
-									<img style="width:30px" src="http://iravin.com/devteam/attendance/assets/profileImages/<?php if(!empty($_SESSION['tasks_userImg'])) echo $_SESSION['tasks_userImg']; ?>" class="img-circle" alt=""> <span class="username hidden-xs"><?php if(!empty($_SESSION['tasks_userName'])) echo $_SESSION['tasks_userName'];  ?></span> <i class="fa fa-caret-down "></i>
+									<img src="assets/images/avatar-1-small.jpg" class="img-circle" alt=""> <span class="username hidden-xs">Peter Clark</span> <i class="fa fa-caret-down "></i>
 								</a>
 								<ul class="dropdown-menu dropdown-dark">
 									<li>
@@ -256,12 +253,11 @@
 						</div>
 						<div class="user-profile border-top padding-horizontal-10 block">
 							<div class="inline-block">
-								<!-- assets/images/avatar-1.jpg -->
-								<img style="width:25%" src="http://iravin.com/devteam/attendance/assets/profileImages/<?php if(!empty($_SESSION['tasks_userImg'])) echo $_SESSION['tasks_userImg']; ?>">
+								<img src="assets/images/avatar-1.jpg">
 							</div>
 							<div class="inline-block">
 								<h5 class="no-margin"> Welcome </h5>
-								<h4 class="no-margin"> <?php if(!empty($_SESSION['tasks_userName'])) echo $_SESSION['tasks_userName']; ?> </h4>
+								<h4 class="no-margin"> Peter Clark </h4>
 								<a class="btn user-options sb_toggle">
 									<i class="fa fa-cog"></i>
 								</a>
@@ -713,7 +709,7 @@
 			<!-- start: PAGESLIDE RIGHT -->
 			<div id="pageslide-right" class="pageslide slide-fixed inner">
 				<div class="right-wrapper">
-					<div class="notifications">
+					<!-- <div class="notifications">
 						<div class="pageslide-title">
 							You have 11 notifications
 						</div>
@@ -759,7 +755,7 @@
 								See all notifications <i class="fa fa-arrow-circle-o-right"></i>
 							</a>
 						</div>
-					</div>
+					</div> --><br />
 					<div class="hidden-xs" id="style_selector">
 						<div id="style_selector_container">
 							<div class="pageslide-title">
@@ -896,8 +892,8 @@
 									<!-- start: TOP NAVIGATION MENU -->
 									<ul class="nav navbar-right">
 										<!-- start: TO-DO DROPDOWN -->
-										<li class="dropdown">
-											<a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
+										<!-- <li class="dropdown"> -->
+											<!-- <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
 												<i class="fa fa-plus"></i> SUBVIEW
 												<div class="tooltip-notification hide">
 													<div class="tooltip-notification-arrow"></div>
@@ -912,8 +908,8 @@
 														</div>
 													</div>
 												</div>
-											</a>
-											<ul class="dropdown-menu dropdown-light dropdown-subview">
+											</a> -->
+											<!-- <ul class="dropdown-menu dropdown-light dropdown-subview">
 												<li class="dropdown-header">
 													Notes
 												</li>
@@ -941,9 +937,9 @@
 												<li>
 													<a href="#showContributors" class="show-contributors"><span class="fa-stack"> <i class="fa fa-user fa-stack-1x fa-lg"></i> <i class="fa fa-share fa-stack-1x stack-right-bottom text-danger"></i> </span> Show all contributor</a>
 												</li>
-											</ul>
-										</li>
-										<li class="dropdown">
+											</ul> -->
+										<!-- </li> -->
+										<!-- <li class="dropdown">
 											<a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
 												<span class="messages-count badge badge-default hide">3</span> <i class="fa fa-envelope"></i> MESSAGES
 											</a>
@@ -1005,17 +1001,17 @@
 													</a>
 												</li>
 											</ul>
-										</li>
-										<li class="menu-search">
+										</li> -->
+										<!-- <li class="menu-search">
 											<a href="#">
 												<i class="fa fa-search"></i> SEARCH
-											</a>
+											</a> -->
 											<!-- start: SEARCH POPOVER -->
-											<div class="popover bottom search-box transition-all">
+											<!-- <div class="popover bottom search-box transition-all">
 												<div class="arrow"></div>
-												<div class="popover-content">
+												<div class="popover-content"> -->
 													<!-- start: SEARCH FORM -->
-													<form class="" id="searchform" action="#">
+													<!-- <form class="" id="searchform" action="#">
 														<div class="input-group">
 															<input type="text" class="form-control" placeholder="Search">
 															<span class="input-group-btn">
@@ -1023,12 +1019,12 @@
 																	<i class="fa fa-search"></i>
 																</button> </span>
 														</div>
-													</form>
+													</form> -->
 													<!-- end: SEARCH FORM -->
-												</div>
-											</div>
+												<!-- </div>
+											</div> -->
 											<!-- end: SEARCH POPOVER -->
-										</li>
+										<!-- </li> -->
 									</ul>
 									<!-- end: TOP NAVIGATION MENU -->
 								</div>
