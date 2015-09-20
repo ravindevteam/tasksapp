@@ -20,7 +20,7 @@ $('input.type-callback').on('ifChecked', function(event) {
 		$(".repeated").show();
 		$(".normal").hide();
 		$("#taskDate").removeAttr("name");
-		$(".yperiod").each(function(){
+		$(".repeatedType").each(function(){
 			$(this).attr('name','period');
 		});
 		$(".date-range").val();
@@ -28,7 +28,7 @@ $('input.type-callback').on('ifChecked', function(event) {
 		$(".repeated").hide();
 		$(".normal").show();
 		$("#taskDate").attr('name', 'taskDate');
-		$(".yperiod").each(function(){
+		$(".repeatedType").each(function(){
 			$(this).removeAttr("name");
 		});
 		$('input:radio[name="period"]').removeClass("active");
