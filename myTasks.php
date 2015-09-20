@@ -64,7 +64,7 @@ $userId = $_SESSION['tasks_empId'];
 											foreach($getAssigneeTo as $assignToMe){
 											?>
 											<tr>
-												<td><a href="taskDetails.php? k=<?php echo $assignToMe['task_id'] ?>"><?php echo $assignToMe['title'] ?></a></td>
+												<td><a href="taskDetails.php? k=<?php echo md5($assignToMe['task_id']) ?>"><?php echo $assignToMe['title'] ?></a></td>
 												<td class="hidden-xs"><?php echo $assignToMe['start_date'] ?></td>
 												<td><?php echo $assignToMe['due_date'] ?></td>
 											</tr>	
@@ -113,7 +113,7 @@ $userId = $_SESSION['tasks_empId'];
 											foreach($getAssigneeBy as $assignByMe){
 											?>
 											<tr>
-												<td><a href="taskDetails.php? k=<?php echo $assignByMe['task_id'] ?>"><?php echo $assignByMe['title'] ?></a></td>
+												<td><a href="taskDetails.php? k=<?php echo md5($assignByMe['task_id']) ?>"><?php echo $assignByMe['title'] ?></a></td>
 												<td class="hidden-xs"><?php echo $assignByMe['start_date'] ?></td>
 												<td><?php echo $assignByMe['due_date'] ?></td>
 											</tr>	
@@ -162,7 +162,7 @@ $userId = $_SESSION['tasks_empId'];
 											foreach($getFollowers as $follow){
 											?>
 											<tr>
-												<td><a href="taskDetails.php? k=<?php echo $follow['task_id'] ?>"><?php echo $follow['title'] ?></a></td>
+												<td><a href="taskDetails.php? k=<?php echo md5($follow['task_id']) ?>"><?php echo $follow['title'] ?></a></td>
 												<td class="hidden-xs"><?php echo $follow['start_date'] ?></td>
 												<td><?php echo $follow['due_date'] ?></td>
 											</tr>	
