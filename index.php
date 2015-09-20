@@ -20,7 +20,7 @@
 	<!--<![endif]-->
 	<!-- start: HEAD -->
 	<head>
-		<title>Rapido - Responsive Admin Template</title>
+		<title>Ravin - tasks application</title>
 		<!-- start: META -->
 		<meta charset="utf-8" />
 		<!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
@@ -51,7 +51,7 @@
 		<div class="row">
 			<div class="main-login col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 				<div class="logo">
-					<img src="assets/images/logo.png">
+					<img src="assets/images/logo1.png">
 				</div>
 				<!-- start: LOGIN BOX -->
 				<div class="box-login">
