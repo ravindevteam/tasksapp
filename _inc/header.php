@@ -284,7 +284,7 @@
 										</a>
 									</li>								
 									<li>
-										<a href="#">
+										<a href="followup.php">
 											<span class="title"> Follow up </span>
 										</a>
 									</li>
