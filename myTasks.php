@@ -1,7 +1,7 @@
 <?php
 require_once("_inc/header.php");
 $db = new db();
-$userId = 1343;
+$userId = $_SESSION['tasks_empId'];
 ?>
 				<!-- start: BREADCRUMB -->
 				<div class="row">
