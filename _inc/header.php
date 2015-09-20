@@ -266,49 +266,27 @@
 						<!-- start: MAIN NAVIGATION MENU -->
 						<ul class="main-navigation-menu">
 							<li>
-								<a href="index.html"><i class="fa fa-home"></i> <span class="title"> Dashboard </span><span class="label label-default pull-right ">LABEL</span> </a>
+								<a href="main.php"><i class="fa fa-home"></i> <span class="title"> Home </span> </a>
 							</li>
 							<li>
-								<a href="javascript:void(0)"><i class="fa fa-desktop"></i> <span class="title"> Layouts </span><i class="icon-arrow"></i> </a>
+								<a href="javascript:void(0)"><i class="fa fa-desktop"></i> <span class="title"> Tasks </span><i class="icon-arrow"></i> </a>
 								<ul class="sub-menu">
 									<li>
-										<a href="javascript:;">
-											Horizontal Menu <i class="icon-arrow"></i>
-										</a>
-										<ul class="sub-menu">
-											<li>
-												<a href="layouts_horizontal_menu.html">
-													Horizontal Menu
-												</a>
-											</li>
-											<li>
-												<a href="layouts_horizontal_menu_fixed.html">
-													Horizontal Menu Fixed
-												</a>
-											</li>
-											<li>
-												<a href="layouts_horizontal_sidebar_menu.html">
-													Horizontal &amp; Sidebar Menu
-												</a>
-											</li>
-										</ul>
-									</li>
-									<li>
-										<a href="layouts_sidebar_closed.html">
-											<span class="title"> Sidebar Closed </span>
+										<a href="createTask.php">
+											<span class="title"> Create task </span>
 										</a>
 									</li>
 									<li>
-										<a href="layouts_sidebar_not_fixed.html">
-											<span class="title"> Sidebar Not Fixed </span>
+										<a href="myTasks.php">
+											<span class="title"> My tasks </span>
 										</a>
 									</li>								
 									<li>
-										<a href="layouts_boxed_layout.html">
-											<span class="title"> Boxed Layout </span>
+										<a href="#">
+											<span class="title"> Follow up </span>
 										</a>
 									</li>
-									<li>
+									<!-- <li>
 										<a href="layouts_footer_fixed.html">
 											<span class="title"> Footer Fixed </span>
 										</a>
@@ -317,10 +295,10 @@
 										<a href="layouts_single_page.html">
 											<span class="title"> Single-Page Interface </span>
 										</a>
-									</li>
+									</li> -->
 								</ul>
 							</li>
-							<li>
+							<!-- <li>
 								<a href="javascript:void(0)"><i class="fa fa-cogs"></i> <span class="title"> UI Lab </span><i class="icon-arrow"></i> </a>
 								<ul class="sub-menu">
 									<li>
@@ -708,7 +686,7 @@
 							</li>
 							<li>
 								<a href="charts.html"><i class="fa fa-bar-chart-o"></i> <span class="title">Charts</span> </a>
-							</li>
+							</li> -->
 						</ul>
 						<!-- end: MAIN NAVIGATION MENU -->
 					</div>
