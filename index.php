@@ -1,8 +1,21 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!-- Template Name: Rapido - Responsive Admin Template build with Twitter Bootstrap 3.x Version: 1.0 Author: ClipTheme -->
 <!--[if IE 8]><html class="ie8 no-js" lang="en"><![endif]-->
 <!--[if IE 9]><html class="ie9 no-js" lang="en"><![endif]-->
 <!--[if !IE]><!-->
+<?php
+	if(!empty($_COOKIE['tasks_cookie']) && $_COOKIE['tasks_cookie'] == 1){
+		$_SESSION['tasks_empId']    = $_COOKIE['tasks_empId'];
+		$_SESSION['tasks_userName'] = $_COOKIE['tasks_userName'];
+		$_SESSION['tasks_userImg']  = $_COOKIE['tasks_userImg'];
+		$_SESSION['tasks_isLogged'] = 1;
+	}
+
+	if(!empty($_SESSION['tasks_isLogged']) && $_SESSION['tasks_isLogged'] == 1){
+		echo '<script>window.location.href="main.php";</script>';
+	}
+?>
 <html lang="en" class="no-js">
 	<!--<![endif]-->
 	<!-- start: HEAD -->
@@ -53,12 +66,12 @@
 						<fieldset>
 							<div class="form-group">
 								<span class="input-icon">
-									<input type="text" class="form-control" name="username" placeholder="Username">
+									<input type="text" class="form-control" name="username" id="username" placeholder="Username">
 									<i class="fa fa-user"></i> </span>
 							</div>
 							<div class="form-group form-actions">
 								<span class="input-icon">
-									<input type="password" class="form-control password" name="password" placeholder="Password">
+									<input type="password" class="form-control password" name="password" id="passowrd" placeholder="Password">
 									<i class="fa fa-lock"></i>
 									<a class="forgot" href="#">
 										I forgot my password

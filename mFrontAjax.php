@@ -272,6 +272,30 @@ if(!empty($_POST['action']) && $_POST['action'] == "showAttachs"){
 		$res = 2;
 	}
 	echo $res;
+}elseif(!empty($_POST['action']) && $_POST['action'] == "loginAction"){
+	$username = $_POST['username'];
+	$passowrd = $_POST['passowrd'];
+	$remember = $_POST['remember'];
+	$hr->query("SELECT * FROM users WHERE `email` = :em AND pass = :pass LIMIT 1");
+	$hr->bind(":em",$username);
+	$hr->bind(":pass",md5($passowrd));
+	$getUser = $hr->fetch();
+	if(!empty($getUser)){
+		$_SESSION['tasks_empId'] = $getUser['emp_id'];
+		$_SESSION['tasks_userName'] = $getUser['name'];
+		$_SESSION['tasks_userImg']  = $getUser['img'];
+		$_SESSION['tasks_isLogged'] = 1;
+		if($remember == 1){
+			setcookie("tasks_empId", $getUser['emp_loc'], time() + (86400 * 30), "/");
+			setcookie("tasks_userName", $getUser['emp_loc'], time() + (86400 * 30), "/");
+			setcookie("tasks_userImg", $getUser['emp_loc'], time() + (86400 * 30), "/");
+			setcookie("tasks_cookie", 1, time() + (86400 * 30), "/");
+		}
+		$flag = 1;
+	}else{
+		$flag = 2;
+	}
+	echo $flag;
 }
 //CLOSE ALL CONNECTIONS
 $db->closeConn();

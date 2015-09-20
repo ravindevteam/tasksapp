@@ -1,5 +1,7 @@
-<?php
-	session_start();
+<?php session_start();
+	if(empty($_SESSION['tasks_isLogged'])){
+		echo '<script>window.location.href="index.php";</script>';
+	}
 	require_once("classes/tasksConnection.php");
 	require_once("classes/hrConnection.php");
 	require_once("classes/tasks.php");
@@ -149,7 +151,7 @@
 					<div class="col-md-4 col-sm-4">
 						<h2>My Info</h2>
 						<address class="margin-bottom-40">
-							Peter Clark
+							<?php if(!empty($_SESSION['tasks_userName'])) echo $_SESSION['tasks_userName']; ?>
 							<br>
 							12345 Street Name, City Name, United States
 							<br>
@@ -197,7 +199,8 @@
 							<!-- start: USER DROPDOWN -->
 							<li class="dropdown current-user">
 								<a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
-									<img src="assets/images/avatar-1-small.jpg" class="img-circle" alt=""> <span class="username hidden-xs">Peter Clark</span> <i class="fa fa-caret-down "></i>
+									<!-- assets/images/avatar-1-small.jpg -->
+									<img style="width:30px" src="http://iravin.com/devteam/attendance/assets/profileImages/<?php if(!empty($_SESSION['tasks_userImg'])) echo $_SESSION['tasks_userImg']; ?>" class="img-circle" alt=""> <span class="username hidden-xs"><?php if(!empty($_SESSION['tasks_userName'])) echo $_SESSION['tasks_userName'];  ?></span> <i class="fa fa-caret-down "></i>
 								</a>
 								<ul class="dropdown-menu dropdown-dark">
 									<li>
@@ -253,11 +256,12 @@
 						</div>
 						<div class="user-profile border-top padding-horizontal-10 block">
 							<div class="inline-block">
-								<img src="assets/images/avatar-1.jpg">
+								<!-- assets/images/avatar-1.jpg -->
+								<img style="width:25%" src="http://iravin.com/devteam/attendance/assets/profileImages/<?php if(!empty($_SESSION['tasks_userImg'])) echo $_SESSION['tasks_userImg']; ?>">
 							</div>
 							<div class="inline-block">
 								<h5 class="no-margin"> Welcome </h5>
-								<h4 class="no-margin"> Peter Clark </h4>
+								<h4 class="no-margin"> <?php if(!empty($_SESSION['tasks_userName'])) echo $_SESSION['tasks_userName']; ?> </h4>
 								<a class="btn user-options sb_toggle">
 									<i class="fa fa-cog"></i>
 								</a>

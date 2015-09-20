@@ -112,7 +112,31 @@ var Login = function() {
 			},
 			submitHandler : function(form) {
 				errorHandler.hide();
-				form.submit();
+				// form.submit();
+				var username = $("#username").val();
+				var passowrd = $("#passowrd").val();
+				if($("#remember").is(":checked")){
+					var remember = 1;
+				}else{
+					var remember = 0;
+				}
+				var postData = {'username':username,'passowrd':passowrd,'remember':remember,'action':'loginAction'};
+				$.ajax({
+					url:"mFrontAjax.php",
+			        type:"POST",
+			        data:postData,
+			        scriptCharset:"application/x-www-form-urlencoded; charset=UTF-8",
+			        success: function(result){
+			        	if(result == 1){
+			        		window.location.href="main.php";
+			        	}else{
+			        		errorHandler.show();
+			        	}
+			        },
+			        error: function(){
+			        	errorHandler.show();
+			        }
+				});
 			},
 			invalidHandler : function(event, validator) {//display error alert on form submit
 				errorHandler.show();

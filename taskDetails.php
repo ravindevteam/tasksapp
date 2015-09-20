@@ -169,7 +169,6 @@
 								<div class="panel panel-white">
 									<div class="panel-body">
 										<?php
-											$_SESSION['tasks_empId'] = 1265;
 											if($creator == $_SESSION['tasks_empId']){
 												$attr = "";
 											}else{
