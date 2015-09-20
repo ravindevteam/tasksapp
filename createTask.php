@@ -70,7 +70,7 @@ $hr_db = new hr();
 										</div>
 									</div>
 									<div class="col-md-6">
-										<input type="hidden" value="1343" id="creator_id">
+										<input type="hidden" value="<?php echo $_SESSION['tasks_empId']?>" id="creator_id">
 										<div class="form-group">
 											<label class="control-label">
 												JOB <span class="symbol required"></span>
